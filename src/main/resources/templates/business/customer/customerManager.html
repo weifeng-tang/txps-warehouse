@@ -32,13 +32,13 @@
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">联系人名称</label>
+            <label class="layui-form-label">收货人姓名</label>
             <div class="layui-input-inline">
                 <input type="text" name="consigneeName" id="consigneeName" class="layui-input input-radius" placeholder="请输入联系人名称">
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">联系人号码</label>
+            <label class="layui-form-label">收货人电话</label>
             <div class="layui-input-inline">
                 <input type="text" name="consigneePhone" id="consigneePhone" class="layui-input input-radius" placeholder="请输入联系人号码">
             </div>
@@ -61,7 +61,7 @@
     <table class="layui-hide" id="customerTable" lay-filter="customerTable"></table>
     <div id="customerToolBar" style="display: none">
         <button type="button" lay-event="add" shiro:hasPermission="customer:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
-            <i class="layui-icon layui-icon-add-1"></i>添加客户
+            <i class="layui-icon layui-icon-add-1"></i>添加商户
         </button>
     </div>
     <div id="customerRowBar" style="display: none;">
@@ -79,81 +79,41 @@
     <form action="" method="post" class="layui-form" id="dataFrm" lay-filter="dataFrm">
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">客户名称</label>
+                <label class="layui-form-label">商户名称</label>
                 <div class="layui-input-block">
                     <input type="hidden" name="id">
                     <input type="text" name="name" lay-verify="required" autocomplete="off"
-                           class="layui-input input-radius" placeholder="请输入客户名称">
+                           class="layui-input input-radius" placeholder="请输入商户户名称">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">客户地址</label>
+                <label class="layui-form-label">商户地址</label>
                 <div class="layui-input-block">
-                    <input type="text" name="address" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入客户地址">
+                    <input type="text" name="address" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入商户地址">
                 </div>
             </div>
 
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
-                <label class="layui-form-label">客户电话</label>
+                <label class="layui-form-label">收货人姓名</label>
                 <div class="layui-input-block">
-                    <input type="text" name="telephone" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入客户电话">
+                    <input type="text" name="consigneeName" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入收货人姓名">
                 </div>
             </div>
             <div class="layui-inline">
-                <label class="layui-form-label">邮编</label>
+                <label class="layui-form-label">收货人电话</label>
                 <div class="layui-input-block">
-                    <input type="text" name="zip" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入邮编">
+                    <input type="text" name="consigneePhone" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入收货人电话">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">联系人</label>
-                <div class="layui-input-block">
-                    <input type="text" name="connectionpersion" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入联系人姓名">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">联系电话</label>
-                <div class="layui-input-block">
-                    <input type="text" name="phone" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入联系人电话">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">开户银行</label>
-                <div class="layui-input-block">
-                    <input type="text" id="bank" name="bank" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">银行账户</label>
-                <div class="layui-input-block">
-                    <input type="text" id="account" name="account" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入开户银行">
-                </div>
-            </div>
-        </div>
-        <div class="layui-form-item">
-            <div class="layui-inline">
-                <label class="layui-form-label">email</label>
-                <div class="layui-input-block">
-                    <input type="text" id="email" name="email" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入email">
-                </div>
-            </div>
-            <div class="layui-inline">
-                <label class="layui-form-label">传真</label>
-                <div class="layui-input-block">
-                    <input type="text" id="fax" name="fax" lay-verify="required" autocomplete="off" class="layui-input input-radius" placeholder="请输入传真">
-                </div>
-            </div>
             <div class="layui-inline">
                 <label class="layui-form-label">是否可用</label>
                 <div class="layui-input-block">
-                    <input type="radio" name="available" value="1" title="可用" checked="">
-                    <input type="radio" name="available" value="0" title="不可用">
+                    <input type="radio" name="status" value="1" title="可用" checked="">
+                    <input type="radio" name="status" value="0" title="不可用">
                 </div>
             </div>
         </div>
@@ -194,14 +154,14 @@
             height: "full-180",
             cols: [ [
                 {field: 'id', title: 'ID', align: 'center',width:'50'},
-                {field: 'name', title: '商户名称', align: 'center',width:'100'},
-                {field: 'consigneeName', title: '收货人姓名', align: 'center',width:'90'},
-                {field: 'consigneePhone', title: '收货人电话', align: 'center',width:'140'},
-                {field: 'address', title: '客户地址', align: 'center',width:'150'},
-                {field: 'createTime', title: '创建时间', align: 'center',width:'130'},
-                {field: 'updateTime', title: '更新时间', align: 'center',width:'130'},
-                {field: 'available', title: '是否可用', align: 'center',width:'100',templet:function (d) {
-                        return d.available==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
+                {field: 'name', title: '商户名称', align: 'center',width:'300'},
+                {field: 'address', title: '客户地址', align: 'center',width:'360'},
+                {field: 'consigneeName', title: '收货人姓名', align: 'center',width:'140'},
+                {field: 'consigneePhone', title: '收货人电话', align: 'center',width:'165'},
+                {field: 'createTime', title: '创建时间', align: 'center',width:'200'},
+                {field: 'updateTime', title: '更新时间', align: 'center',width:'200'},
+                {field: 'status', title: '是否可用', align: 'center',width:'100',templet:function (d) {
+                        return d.status==1?'<font color="blue">可用</font>':'<font color="red">不可用</font>';
                     }},
                 {fixed: 'right', title: '操作', toolbar: '#customerRowBar', align: 'center',width:'180'}
             ] ],
@@ -277,7 +237,7 @@
                 type:1,
                 content:$("#addOrUpdateDiv"),
                 area:['700px','500px'],
-                title:'修改客户',
+                title:'修改商户',
                 success:function () {
                     //清空原有的数据
                     $("#dataFrm")[0].reset();
@@ -302,8 +262,23 @@
 
         //删除
         function deleteCustomer(data) {
-            layer.confirm('你确定要删除【' + data.customername + '】这个客户吗？', {icon: 3, title: '提示'}, function (index) {
-                $.post("/customer/deleteCustomer", {id: data.id},function (res) {
+            layer.confirm('你确定要删除【' + data.name + '】这个商户吗？', {icon: 3, title: '提示'}, function (index) {
+                $.ajax({
+                    url: '/customer/deleteCustomer',
+                    type: 'DELETE',
+                    data: {id: data.id},
+                    success: function(result) {
+                        if (res.code == 200) {
+                            tableIns.reload({
+                                where:"",
+                            });
+                        }
+                        layer.msg(res.msg);
+                    }
+                });
+                layer.close(index);
+
+                /*$.post("/customer/deleteCustomer", {id: data.id},function (res) {
                     if (res.code == 200) {
                         tableIns.reload({
                             where:"",
@@ -311,7 +286,7 @@
                     }
                     layer.msg(res.msg);
                 });
-                layer.close(index);
+                layer.close(index);*/
             });
         }
 

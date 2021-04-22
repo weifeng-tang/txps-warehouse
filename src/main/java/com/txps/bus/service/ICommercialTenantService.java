@@ -13,4 +13,9 @@ import com.baomidou.mybatisplus.extension.service.IService;
  */
 public interface ICommercialTenantService extends IService<CommercialTenant> {
 
+    /**
+     * 根据客户id删除商户
+     * @param id    商户id
+     */
+    void deleteCommercialTenantById(Long id);
 }

@@ -9,7 +9,6 @@ import com.txps.bus.entity.Customer;
 import com.txps.bus.service.ICommercialTenantService;
 import com.txps.bus.service.ICustomerService;
 import com.txps.bus.vo.CommercialTenantVo;
-import com.txps.bus.vo.CustomerVo;
 import com.txps.sys.common.Constast;
 import com.txps.sys.common.DataGridView;
 import com.txps.sys.common.ResultObj;
@@ -53,21 +52,21 @@ public class   CustomerController {
         //2.声明一个queryWrapper
         QueryWrapper<CommercialTenant> queryWrapper = new QueryWrapper<>();
         queryWrapper.like(StringUtils.isNotBlank(commercialTenantVo.getName()),"name",commercialTenantVo.getName());
-        queryWrapper.like(StringUtils.isNotBlank(commercialTenantVo.getConsigneeName()),"consigneeName",commercialTenantVo.getConsigneeName());
-        queryWrapper.like(StringUtils.isNotBlank(commercialTenantVo.getConsigneePhone()),"consigneePhone",commercialTenantVo.getConsigneePhone());
+        queryWrapper.like(StringUtils.isNotBlank(commercialTenantVo.getConsigneeName()),"consignee_name",commercialTenantVo.getConsigneeName());
+        queryWrapper.like(StringUtils.isNotBlank(commercialTenantVo.getConsigneePhone()),"consignee_phone",commercialTenantVo.getConsigneePhone());
         commercialTenantService.page(page,queryWrapper);
         return new DataGridView(page.getTotal(),page.getRecords());
     }
 
     /**
      * 添加一个客户
-     * @param customerVo
+     * @param commercialTenantVo
      * @return
      */
     @RequestMapping("addCustomer")
-    public ResultObj addCustomer(CustomerVo customerVo){
+    public ResultObj addCustomer(CommercialTenantVo commercialTenantVo){
         try {
-            customerService.save(customerVo);
+            commercialTenantService.save(commercialTenantVo);
             return ResultObj.ADD_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -77,13 +76,13 @@ public class   CustomerController {
 
     /**
      * 修改一个客户
-     * @param customerVo
+     * @param commercialTenantVo
      * @return
      */
     @RequestMapping("updateCustomer")
-    public ResultObj updateCustomer(CustomerVo customerVo){
+    public ResultObj updateCustomer(CommercialTenantVo commercialTenantVo){
         try {
-            customerService.updateById(customerVo);
+            commercialTenantService.updateById(commercialTenantVo);
             return ResultObj.UPDATE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -99,9 +98,9 @@ public class   CustomerController {
     @ApiOperation(value = "删除一个客户",notes = "删除一个客户")
     @ApiImplicitParams({@ApiImplicitParam(name = "id", value = "客户ID",required = true,paramType = "query",dataType = "Integer")})
     @RequestMapping(value = "deleteCustomer",method = RequestMethod.DELETE)
-    public ResultObj deleteCustomer(Integer id){
+    public ResultObj deleteCustomer(Long id){
         try {
-            customerService.deleteCustomerById(id);
+            commercialTenantService.deleteCommercialTenantById(id);
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
