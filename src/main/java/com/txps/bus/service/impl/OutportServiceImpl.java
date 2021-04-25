@@ -1,9 +1,9 @@
 package com.txps.bus.service.impl;
 
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Inport;
 import com.txps.bus.entity.Outport;
-import com.txps.bus.mapper.GoodsMapper;
+import com.txps.bus.mapper.GoodsMapper2;
 import com.txps.bus.mapper.InportMapper;
 import com.txps.bus.mapper.OutportMapper;
 import com.txps.bus.service.IOutportService;
@@ -30,7 +30,7 @@ public class OutportServiceImpl extends ServiceImpl<OutportMapper, Outport> impl
     private InportMapper inportMapper;
 
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsMapper2 goodsMapper;
 
     /**
      * @param id    进货单ID
@@ -42,7 +42,7 @@ public class OutportServiceImpl extends ServiceImpl<OutportMapper, Outport> impl
         //1.通过进货单ID查询出进货单信息
         Inport inport = inportMapper.selectById(id);
         //2.根据商品ID查询商品信息
-        Goods goods = goodsMapper.selectById(inport.getGoodsid());
+        Goods2 goods = goodsMapper.selectById(inport.getGoodsid());
         //3.修改商品的数量     商品的数量-退货的数量
         goods.setNumber(goods.getNumber()-number);
 

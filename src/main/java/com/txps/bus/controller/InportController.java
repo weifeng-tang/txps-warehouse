@@ -4,10 +4,10 @@ package com.txps.bus.controller;
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Inport;
 import com.txps.bus.entity.Provider;
-import com.txps.bus.service.IGoodsService;
+import com.txps.bus.service.IGoodsService2;
 import com.txps.bus.service.IInportService;
 import com.txps.bus.service.IProviderService;
 import com.txps.bus.vo.InportVo;
@@ -41,7 +41,7 @@ public class InportController {
     private IProviderService providerService;
 
     @Autowired
-    private IGoodsService goodsService;
+    private IGoodsService2 goodsService;
 
     /**
      * 查询商品进货
@@ -69,7 +69,7 @@ public class InportController {
                 //设置供应商姓名
                 inport.setProvidername(provider.getProvidername());
             }
-            Goods goods = goodsService.getById(inport.getGoodsid());
+            Goods2 goods = goodsService.getById(inport.getGoodsid());
             if (goods!=null){
                 //设置商品名称
                 inport.setGoodsname(goods.getGoodsname());

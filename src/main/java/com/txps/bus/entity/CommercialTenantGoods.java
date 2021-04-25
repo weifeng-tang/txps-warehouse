@@ -1,6 +1,7 @@
 package com.txps.bus.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -21,8 +23,8 @@ import java.util.Date;
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("bus_goods")
-public class Goods implements Serializable {
+@TableName("bus_commercial_tenant_goods")
+public class CommercialTenantGoods implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -33,39 +35,29 @@ public class Goods implements Serializable {
     private Long id;
 
     /**
-     * 商品名称
+     * 关联商户id
      */
-    private String goodsName;
+    private Long commercialTenantId;
 
     /**
-     * 供应商id
+     * 关联商品id
      */
-    private Integer providerId;
+    private Long goodsId;
 
     /**
-     * 商品图片
+     * 商品别名
      */
-    private String goodsImg;
+    private String goodsAnotherName;
 
     /**
-     * 商品类型
+     * 商品单价
      */
-    private Integer type;
+    private BigDecimal unitPrice;
 
     /**
-     * 商品库存
+     * 商品规格
      */
-    private Integer number;
-
-    /**
-     * 商品库存预警值
-     */
-    private Integer dangerNum;
-
-    /**
-     * 商品描述
-     */
-    private String description;
+    private String specification;
 
     /**
      * 状态
@@ -82,5 +74,21 @@ public class Goods implements Serializable {
      */
     private Date updateTime;
 
+    /**
+     * 商品类型
+     */
+    @TableField(exist = false)
+    private Integer type;
+
+    /**
+     * 商品描述
+     */
+    @TableField(exist = false)
+    private String description;
+
+    /**
+     * 关联商户名称
+     */
+    private String commercialTenantName;
 
 }

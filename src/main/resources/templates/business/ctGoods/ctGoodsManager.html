@@ -49,12 +49,19 @@
         <div class="layui-inline">
             <label class="layui-form-label">商品名称</label>
             <div class="layui-input-inline">
-                <input type="text" name="goodsName" id="goodsName" class="layui-input input-radius"
+                <input type="text" name="goodsAnotherName" id="goodsAnotherName" class="layui-input input-radius"
                        placeholder="请输入商品名称">
             </div>
         </div>
         <div class="layui-inline">
-
+            <label class="layui-form-label">商户</label>
+            <div class="layui-input-inline">
+                <select name="commercialTenantId" id="commercialTenantId" class="select_ct">
+                    <option value="">全部</option>
+                </select>
+            </div>
+        </div>
+        <div class="layui-inline">
             <label class="layui-form-label">商品类型</label>
             <div class="layui-input-inline">
                 <select name="type" id="queryGoodsType">
@@ -83,8 +90,8 @@
 <div>
     <table class="layui-hide" id="goodsTable" lay-filter="goodsTable"></table>
     <div id="goodsToolBar" style="display: none">
-        <button type="button" lay-event="add" shiro:hasPermission="goods:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
-            <i class="layui-icon layui-icon-add-1"></i>添加商品
+        <button type="button" lay-event="add" shiro:hasPermission="ct_goods:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+            <i class="layui-icon layui-icon-add-1"></i>添加商户商品
         </button>
     </div>
     <div id="goodsRowBar" style="display: none;">
@@ -103,18 +110,18 @@
         <div class="layui-col-md12 layui-col-xs12">
             <div class="layui-row layui-col-space10">
                 <div class="layui-col-md9 layui-col-xs7">
-                    <!--<div class="layui-form-item magt3">
-                        <label class="layui-form-label">供应商</label>
-                        <div class="layui-input-block">
-                            <select name="providerid" id="providerid">
-                                <option value="0">请选择供应商</option>
+                    <div class="layui-form-item magt3">
+                        <label class="layui-form-label">所属商户</label>
+                        <div class="layui-input-inline">
+                            <select name="commercialTenantId" id="select_ct_list">
+
                             </select>
                         </div>
-                    </div>-->
+                    </div>
                     <div class="layui-form-item magt3">
                         <label class="layui-form-label">商品类型</label>
                         <div class="layui-input-inline">
-                            <select name="type" id="goodsType">
+                            <select name="type" id="goodsType" lay-filter="goodsType" >
                                 <option value="0">蔬菜</option>
                                 <option value="1">冰鲜</option>
                                 <option value="2">干货</option>
@@ -122,23 +129,31 @@
                             </select>
                         </div>
                     </div>
+                    <div class="layui-form-item magt3">
+                        <label class="layui-form-label">所属商品</label>
+                        <div class="layui-input-inline">
+                            <select name="goodsId" id="select_affiliated_goods">
+
+                            </select>
+                        </div>
+                    </div>
                     <div class="layui-form-item">
                         <label class="layui-form-label">商品名称</label>
                         <div class="layui-input-inline">
                             <input type="hidden" name="id">
-                            <input type="text" class="layui-input input-radius" name="goodsName" lay-verify="required" placeholder="请输入商品名称">
+                            <input type="text" class="layui-input input-radius" name="goodsAnotherName" lay-verify="required" placeholder="请输入商品名称">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">商品描述</label>
+                        <label class="layui-form-label">商品规格</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input input-radius" name="description" lay-verify="required" placeholder="请输入商品描述">
+                            <input type="text" class="layui-input input-radius" name="specification" lay-verify="required" placeholder="请输入商品规格">
                         </div>
                     </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">预警值</label>
+                        <label class="layui-form-label">商品单价</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input input-radius" name="dangerNum" lay-verify="required|number" placeholder="请输入商品预警值">
+                            <input type="text" class="layui-input input-radius" name="unitPrice" lay-verify="required|number" placeholder="请输入商品单价,单位:元">
                         </div>
                     </div>
                 </div>
@@ -197,19 +212,22 @@
         tableIns = table.render({
             elem: "#goodsTable",
             title: "基础商品表",
-            url: "/goods/loadAllGoods",
+            url: "/ctGoods/loadAllCtGoods",
             toolbar: "#goodsToolBar",
             page: true,
+            idField : 'id',
+            pageSize: 10,
             height: "full-180",
             cols: [ [
-                {field: 'id', title: 'ID', align: 'center',width:'50'},
-                {field: 'goodsName', title: '商品名称', align: 'center',width:'150'},
-                {field: 'description', title: '商品描述', align: 'center',width:'150'},
+                {field: '', title: '序号', align: 'center',width:'50', type:'numbers'},
+                {field:'goodsId', title: '关联商品id', hide:true},
+                {field: 'commercialTenantName', title: '商户名称', align: 'center',width:'150'},
+                {field: 'goodsAnotherName', title: '商品名称', align: 'center',width:'150'},
+                {field: 'unitPrice', title: '商品单价', align: 'center',width:'150'},
+                {field: 'specification', title: '商品规格', align: 'center',width:'90'},
                 {field: 'type', title: '商品类型', align: 'center',width:'150', templet:function (d) {
                         return d.type==0?'<span>蔬菜</span>':d.type==1?'<span>冰鲜</span>':d.type==2?'<span>干货</span>':d.type==3?'<span>消耗</span>':'<span >未知</span>';
-                }},
-                {field: 'number', title: '商品库存', align: 'center',width:'150'},
-                {field: 'dangerNum', title: '库存预警值', align: 'center',width:'90'},
+                    }},
                 {field: 'createTime', title: '创建时间', align: 'center',width:'200'},
                 {field: 'updateTime', title: '更新时间', align: 'center',width:'200'},
                 {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'180'}
@@ -227,17 +245,17 @@
         });
 
         //初始化查询条件的下拉列表
-        /*$.get("/provider/loadAllProviderForSelect",function (res) {
+        $.get("/customer/loadAllCustomerForSelect",function (res) {
             var data = res.data;
-            var dom = $("#select_providerid");
-            var html = '<option value="0">请选择供应商</option>';
+            var dom = $(".select_ct");
+            var html = '<option value="">全部</option>';
             $.each(data,function (index, item) {
-                html += '<option value="'+item.id+'">'+item.providername+'</option>';
+                html += '<option value="'+item.id+'">'+item.name+'</option>';
             })
             dom.html(html);
             //重新渲染下拉列表
             form.render("select");
-        });*/
+        });
 
         //监控模糊查询按钮事件
         form.on("submit(doSearch)", function (data) {
@@ -300,23 +318,41 @@
             mainIndex = layer.open({
                 type:1,
                 content:$("#addOrUpdateDiv"),
-                area:['700px','500px'],
-                title:'添加商品',
+                area:['500px','500px'],
+                title:'添加商户商品',
                 success:function () {
                     $("#dataFrm")[0].reset();
-                    url="/goods/addGoods";
-                    /*$.get("/provider/loadAllProviderForSelect",function(res){
+                    url="/ctGoods/addCtGoods";
+                    $.get("/customer/loadAllCustomerForSelect",function (res) {
+                        var data = res.data;
+                        var dom = $("#select_ct_list");
+                        var html = '';
+                        $.each(data,function (index, item) {
+                            html += '<option value="'+item.id+'">'+item.name+'</option>';
+                        })
+                        dom.html(html);
+                        //重新渲染下拉列表
+                        form.render("select");
+                    });
+                    var myselect=document.getElementById("goodsType");
+                    var index=myselect.selectedIndex;
+                    let value = myselect.options[index].value;
+                    console.log(myselect);
+                    console.log(index);
+                    console.log(value)
+
+                    $.get("/goods/loadAllGoodsForSelect?goodsType=" + value, function(res){
                         var data=res.data;
-                        var dom=$("#providerid");
-                        var html='<option value="0">请选择供应商</option>'
+                        var dom=$("#select_affiliated_goods");
+                        var html=''
                         $.each(data,function(index,item){
-                            html+='<option value="'+item.id+'">'+item.providername+'</option>'
+                            html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
                         });
                         dom.html(html);
                         form.render("select");
-                    });*/
-                    //设置默认为无图片
-                    /*$(".thumbImg").attr("src",'/file/showImageByPath?path=images/noDefaultImage.jpg');
+                    });
+                    /*//设置默认为无图片
+                    $(".thumbImg").attr("src",'/file/showImageByPath?path=images/noDefaultImage.jpg');
                     $("#goodsimg").val('/images/noDefaultImage.jpg');*/
                 }
             });
@@ -334,10 +370,26 @@
                     $("#dataFrm")[0].reset();
                     //装载新的数据
                     form.val("dataFrm",data);
+                    console.log(data);
+
+                    $.get("/goods/loadAllGoodsForSelect?goodsType=" + data.type, function(res){
+                        var data=res.data;
+                        var dom=$("#select_affiliated_goods");
+                        var html=''
+                        $.each(data,function(index,item){
+                            html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
+                        });
+                        dom.html(html);
+                        form.render("select");
+                    });
+
+                    $("#select_affiliated_goods").find("option[value="+data.goodsId+"]").prop("selected",true);
+                    form.render();
+
                     //图片进行回显
-                    $(".thumbImg").attr("src",'/file/showImageByPath?path='+data.goodsimg);
+                    /*$(".thumbImg").attr("src",'/file/showImageByPath?path='+data.goodsimg);*/
                     //下拉列表的回显
-                    $.get("/provider/loadAllProviderForSelect",function(res){
+                    /*$.get("/provider/loadAllProviderForSelect",function(res){
                         var redata=res.data;
                         var dom=$("#providerid");
                         var html='<option value="0">请选择供应商</option>'
@@ -350,7 +402,7 @@
                         });
                         dom.html(html);
                         form.render("select");
-                    });
+                    });*/
                     url="/goods/updateGoods";
                 }
             });
@@ -367,6 +419,10 @@
             return false;
         });
 
+
+
+
+
         //删除
         function deleteGoods(data) {
             layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？删除该商品，其商品进货、商品退货、商品销售、商品销售退货将会同步删除！', {icon: 3, title: '提示'}, function (index) {
@@ -381,6 +437,27 @@
                 layer.close(index);
             });
         }
+
+        form.on("select(goodsType)",function (data) {
+            console.log("你好世界");
+            var myselect=document.getElementById("goodsType");
+            var index=myselect.selectedIndex;
+            let value = myselect.options[index].value;
+            console.log(myselect);
+            console.log(index);
+            console.log(value)
+
+            $.get("/goods/loadAllGoodsForSelect?goodsType=" + value, function(res){
+                var data=res.data;
+                var dom=$("#select_affiliated_goods");
+                var html=''
+                $.each(data,function(index,item){
+                    html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
+                });
+                dom.html(html);
+                form.render("select");
+            });
+        });
 
 
     });

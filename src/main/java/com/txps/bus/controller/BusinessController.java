@@ -75,4 +75,15 @@ public class BusinessController {
         return "business/salesback/salesbackManager";
     }
 
+    /**
+     * 跳转到商户商品管理页面
+     * @return
+     */
+    @RequestMapping("toCTGoodsManager")
+    public String toCTGoodsManager(){
+        return "business/ctGoods/ctGoodsManager";
+    }
+
+
+
 }

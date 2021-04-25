@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txps.bus.entity.Customer;
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Sales;
 import com.txps.bus.service.ICustomerService;
-import com.txps.bus.service.IGoodsService;
+import com.txps.bus.service.IGoodsService2;
 import com.txps.bus.service.ISalesService;
 import com.txps.bus.vo.SalesVo;
 import com.txps.sys.common.DataGridView;
@@ -41,7 +41,7 @@ public class SalesController {
     private ICustomerService customerService;
 
     @Autowired
-    private IGoodsService goodsService;
+    private IGoodsService2 goodsService;
 
     /**
      * 查询所有商品销售信息
@@ -68,7 +68,7 @@ public class SalesController {
                 sales.setCustomername(customer.getCustomername());
             }
             //设置商品名称
-            Goods goods = goodsService.getById(sales.getGoodsid());
+            Goods2 goods = goodsService.getById(sales.getGoodsid());
             if (null!=goods){
                 //设置商品名称
                 sales.setGoodsname(goods.getGoodsname());

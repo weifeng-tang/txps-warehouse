@@ -1,8 +1,8 @@
 package com.txps.bus.service.impl;
 
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Inport;
-import com.txps.bus.mapper.GoodsMapper;
+import com.txps.bus.mapper.GoodsMapper2;
 import com.txps.bus.mapper.InportMapper;
 import com.txps.bus.service.IInportService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
@@ -25,7 +25,7 @@ import java.io.Serializable;
 public class InportServiceImpl extends ServiceImpl<InportMapper, Inport> implements IInportService {
 
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsMapper2 goodsMapper;
 
     /**
      * 保存商品进货
@@ -35,7 +35,7 @@ public class InportServiceImpl extends ServiceImpl<InportMapper, Inport> impleme
     @Override
     public boolean save(Inport entity) {
         //根据商品ID查询商品
-        Goods goods = goodsMapper.selectById(entity.getGoodsid());
+        Goods2 goods = goodsMapper.selectById(entity.getGoodsid());
         goods.setNumber(goods.getNumber()+entity.getNumber());
         goodsMapper.updateById(goods);
         //保存进货信息
@@ -52,7 +52,7 @@ public class InportServiceImpl extends ServiceImpl<InportMapper, Inport> impleme
         //根据进货ID查询进货信息
         Inport inport = baseMapper.selectById(entity.getId());
         //根据商品ID查询商品信息
-        Goods goods = goodsMapper.selectById(entity.getGoodsid());
+        Goods2 goods = goodsMapper.selectById(entity.getGoodsid());
         //库存算法  当前库存-进货单修改之前的数量+修改之后的数量
         goods.setNumber(goods.getNumber()-inport.getNumber()+entity.getNumber());
         goodsMapper.updateById(goods);
@@ -70,7 +70,7 @@ public class InportServiceImpl extends ServiceImpl<InportMapper, Inport> impleme
         //根据进货ID查询进货信息
         Inport inport = baseMapper.selectById(id);
         //根据商品ID查询商品信息
-        Goods goods = goodsMapper.selectById(inport.getGoodsid());
+        Goods2 goods = goodsMapper.selectById(inport.getGoodsid());
         //库存算法  当前库存-进货单数量
         goods.setNumber(goods.getNumber()-inport.getNumber());
         goodsMapper.updateById(goods);

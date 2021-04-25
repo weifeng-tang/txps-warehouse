@@ -5,7 +5,6 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txps.bus.entity.CommercialTenant;
-import com.txps.bus.entity.Customer;
 import com.txps.bus.service.ICommercialTenantService;
 import com.txps.bus.service.ICustomerService;
 import com.txps.bus.vo.CommercialTenantVo;
@@ -115,9 +114,9 @@ public class   CustomerController {
      */
     @RequestMapping("loadAllCustomerForSelect")
     public DataGridView loadAllCustomerForSelect(){
-        QueryWrapper<Customer> queryWrapper = new QueryWrapper<Customer>();
-        queryWrapper.eq("available", Constast.AVAILABLE_TRUE);
-        List<Customer> list = customerService.list(queryWrapper);
+        QueryWrapper<CommercialTenant> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq("status", Constast.AVAILABLE_TRUE);
+        List<CommercialTenant> list = commercialTenantService.list(queryWrapper);
         return new DataGridView(list);
     }
 

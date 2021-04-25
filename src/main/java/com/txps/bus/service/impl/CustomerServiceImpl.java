@@ -2,7 +2,7 @@ package com.txps.bus.service.impl;
 
 import com.txps.bus.entity.Customer;
 import com.txps.bus.mapper.CustomerMapper;
-import com.txps.bus.mapper.GoodsMapper;
+import com.txps.bus.mapper.GoodsMapper2;
 import com.txps.bus.service.ICustomerService;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -25,7 +25,7 @@ import java.util.Collection;
 public class CustomerServiceImpl extends ServiceImpl<CustomerMapper, Customer> implements ICustomerService {
 
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsMapper2 goodsMapper;
 
     @Override
     public boolean save(Customer entity) {

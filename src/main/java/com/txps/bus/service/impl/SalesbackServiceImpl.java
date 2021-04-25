@@ -1,10 +1,10 @@
 package com.txps.bus.service.impl;
 
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Sales;
 import com.txps.bus.entity.Salesback;
-import com.txps.bus.mapper.GoodsMapper;
+import com.txps.bus.mapper.GoodsMapper2;
 import com.txps.bus.mapper.SalesMapper;
 import com.txps.bus.mapper.SalesbackMapper;
 import com.txps.bus.service.ISalesbackService;
@@ -30,7 +30,7 @@ public class SalesbackServiceImpl extends ServiceImpl<SalesbackMapper, Salesback
     private SalesMapper salesMapper;
 
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsMapper2 goodsMapper;
 
     /**
      * @param id    销售单ID
@@ -42,7 +42,7 @@ public class SalesbackServiceImpl extends ServiceImpl<SalesbackMapper, Salesback
         //1.通过销售单ID查询出销售单信息
         Sales sales = salesMapper.selectById(id);
         //2.根据商品ID查询商品信息
-        Goods goods = goodsMapper.selectById(sales.getGoodsid());
+        Goods2 goods = goodsMapper.selectById(sales.getGoodsid());
         //3.修改商品的数量     商品的数量-退货的数量
         goods.setNumber(goods.getNumber()+number);
 

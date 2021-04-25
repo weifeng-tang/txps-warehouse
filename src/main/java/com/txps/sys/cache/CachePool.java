@@ -1,10 +1,10 @@
 package com.txps.sys.cache;
 
 import com.txps.bus.entity.Customer;
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Provider;
 import com.txps.bus.mapper.CustomerMapper;
-import com.txps.bus.mapper.GoodsMapper;
+import com.txps.bus.mapper.GoodsMapper2;
 import com.txps.bus.mapper.ProviderMapper;
 import com.txps.sys.common.SpringUtil;
 import com.txps.sys.entity.Dept;
@@ -76,9 +76,9 @@ public class CachePool {
         }
 
         //同步商品数据
-        GoodsMapper goodsMapper = SpringUtil.getBean(GoodsMapper.class);
-        List<Goods> goodsList = goodsMapper.selectList(null);
-        for (Goods goods : goodsList) {
+        GoodsMapper2 goodsMapper = SpringUtil.getBean(GoodsMapper2.class);
+        List<Goods2> goodsList = goodsMapper.selectList(null);
+        for (Goods2 goods : goodsList) {
             CACHE_CONTAINER.put("goods:"+goods.getId(),goods);
         }
 

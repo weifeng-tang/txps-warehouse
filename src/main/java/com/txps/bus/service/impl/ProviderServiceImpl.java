@@ -2,9 +2,9 @@ package com.txps.bus.service.impl;
 
 import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Provider;
-import com.txps.bus.mapper.GoodsMapper;
+import com.txps.bus.mapper.GoodsMapper2;
 import com.txps.bus.mapper.ProviderMapper;
 import com.txps.bus.service.IProviderService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -28,7 +28,7 @@ import java.util.List;
 public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> implements IProviderService {
 
     @Autowired
-    private GoodsMapper goodsMapper;
+    private GoodsMapper2 goodsMapper;
 
     @Override
     public boolean save(Provider entity) {
@@ -61,10 +61,10 @@ public class ProviderServiceImpl extends ServiceImpl<ProviderMapper, Provider> i
     @Override
     public void deleteProviderById(Integer id) {
         //根据供应商id查询出商品id
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
+        QueryWrapper<Goods2> queryWrapper = new QueryWrapper<Goods2>();
         queryWrapper.eq("providerid",id);
-        List<Goods> goods = goodsMapper.selectList(queryWrapper);
-        for (Goods good : goods) {
+        List<Goods2> goods = goodsMapper.selectList(queryWrapper);
+        for (Goods2 good : goods) {
             //获取一个商品id
             Integer id1 = good.getId();
             //根据商品id删除商品销售信息

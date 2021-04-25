@@ -5,11 +5,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Provider;
 import com.txps.bus.service.IGoodsService;
 import com.txps.bus.service.IProviderService;
 import com.txps.bus.vo.GoodsVo;
-import com.txps.sys.common.AppFileUtils;
 import com.txps.sys.common.Constast;
 import com.txps.sys.common.DataGridView;
 import com.txps.sys.common.ResultObj;
@@ -45,24 +45,12 @@ public class GoodsController {
      */
     @RequestMapping("loadAllGoods")
     public DataGridView loadAllGoods(GoodsVo goodsVo){
-        IPage<Goods> page = new Page<Goods>(goodsVo.getPage(),goodsVo.getLimit());
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
-        queryWrapper.eq(goodsVo.getProviderid()!=null&&goodsVo.getProviderid()!=0,"providerid",goodsVo.getProviderid());
-        queryWrapper.like(StringUtils.isNotBlank(goodsVo.getGoodsname()),"goodsname",goodsVo.getGoodsname());
-        queryWrapper.like(StringUtils.isNotBlank(goodsVo.getProductcode()),"productcode",goodsVo.getProductcode());
-        queryWrapper.like(StringUtils.isNotBlank(goodsVo.getPromitcode()),"promitcode",goodsVo.getPromitcode());
-        queryWrapper.like(StringUtils.isNotBlank(goodsVo.getDescription()),"description",goodsVo.getDescription());
-        queryWrapper.like(StringUtils.isNotBlank(goodsVo.getSize()),"size",goodsVo.getSize());
-
+        IPage<Goods> page = new Page<>(goodsVo.getPage(),goodsVo.getLimit());
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.like(StringUtils.isNotBlank(goodsVo.getGoodsName()), "goods_name", goodsVo.getGoodsName());
+        queryWrapper.eq(goodsVo.getType() != null, "type", goodsVo.getType());
         queryWrapper.orderByDesc("id");
         goodsService.page(page,queryWrapper);
-        List<Goods> records = page.getRecords();
-        for (Goods goods : records) {
-            Provider provider = providerService.getById(goods.getProviderid());
-            if (null!=provider){
-                goods.setProvidername(provider.getProvidername());
-            }
-        }
         return new DataGridView(page.getTotal(),page.getRecords());
     }
 
@@ -74,12 +62,6 @@ public class GoodsController {
     @RequestMapping("addGoods")
     public ResultObj addGoods(GoodsVo goodsVo){
         try {
-            System.out.println("====================================");
-            System.out.println(goodsVo.getGoodsimg());
-            if (goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().endsWith("_temp")){
-                String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
-                goodsVo.setGoodsimg(newName);
-            }
             goodsService.save(goodsVo);
             return ResultObj.ADD_SUCCESS;
         } catch (Exception e) {
@@ -96,17 +78,6 @@ public class GoodsController {
     @RequestMapping("updateGoods")
     public ResultObj updateGoods(GoodsVo goodsVo){
         try {
-            //商品图片不是默认图片
-            if (!(goodsVo.getGoodsimg()!=null&&goodsVo.getGoodsimg().equals(Constast.DEFAULT_IMG_GOODS))){
-
-                if (goodsVo.getGoodsimg().endsWith("_temp")){
-                    String newName = AppFileUtils.renameFile(goodsVo.getGoodsimg());
-                    goodsVo.setGoodsimg(newName);
-                    //删除原先的图片
-                    String oldPath = goodsService.getById(goodsVo.getId()).getGoodsimg();
-                    AppFileUtils.removeFileByPath(oldPath);
-                }
-            }
             goodsService.updateById(goodsVo);
             return ResultObj.UPDATE_SUCCESS;
         } catch (Exception e) {
@@ -123,10 +94,10 @@ public class GoodsController {
     @RequestMapping("deleteGoods")
     public ResultObj deleteGoods(Integer id,String goodsimg){
         try {
-            //删除商品的图片
+            /*//删除商品的图片
             AppFileUtils.removeFileByPath(goodsimg);
 //            goodsService.removeById(id);
-            goodsService.deleteGoodsById(id);
+            goodsService.deleteGoodsById(id);*/
             return ResultObj.DELETE_SUCCESS;
         } catch (Exception e) {
             e.printStackTrace();
@@ -135,21 +106,15 @@ public class GoodsController {
     }
 
     /**
-     * 加载所有可用的商品
+     * 根据商品类型加载所有可用的商品
      * @return
      */
     @RequestMapping("loadAllGoodsForSelect")
-    public DataGridView loadAllGoodsForSelect(){
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
-        queryWrapper.eq("available",Constast.AVAILABLE_TRUE);
-        List<Goods> list = goodsService.list(queryWrapper);
-        for (Goods goods : list) {
-            Provider provider = providerService.getById(goods.getProviderid());
-            if (null!=provider){
-                goods.setProvidername(provider.getProvidername());
-            }
-        }
-        return new DataGridView(list);
+    public DataGridView loadAllGoodsForSelect(Integer goodsType){
+        QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
+        queryWrapper.eq(goodsType != null, "type", goodsType);
+        queryWrapper.eq("status",Constast.AVAILABLE_TRUE);
+        return new DataGridView(goodsService.list(queryWrapper));
     }
 
     /**
@@ -159,11 +124,11 @@ public class GoodsController {
      */
     @RequestMapping("loadGoodsByProviderId")
     public DataGridView loadGoodsByProviderId(Integer providerid){
-        QueryWrapper<Goods> queryWrapper = new QueryWrapper<Goods>();
+        QueryWrapper<Goods2> queryWrapper = new QueryWrapper<Goods2>();
         queryWrapper.eq("available",Constast.AVAILABLE_TRUE);
         queryWrapper.eq(providerid!=null,"providerid",providerid);
-        List<Goods> list = goodsService.list(queryWrapper);
-        for (Goods goods : list) {
+        List<Goods2> list = null;/*goodsService.list(queryWrapper);*/
+        for (Goods2 goods : list) {
             Provider provider = providerService.getById(goods.getProviderid());
             if (null!=provider){
                 goods.setProvidername(provider.getProvidername());
@@ -174,7 +139,7 @@ public class GoodsController {
 
     @RequestMapping("loadAllWarningGoods")
     public DataGridView loadAllWarningGoods(){
-        List<Goods> goods = goodsService.loadAllWarning();
+        List<Goods2> goods = null;/*goodsService.loadAllWarning();*/
         return new DataGridView((long) goods.size(),goods);
     }
 

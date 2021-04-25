@@ -5,10 +5,10 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.txps.bus.entity.Customer;
-import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.bus.entity.Salesback;
 import com.txps.bus.service.ICustomerService;
-import com.txps.bus.service.IGoodsService;
+import com.txps.bus.service.IGoodsService2;
 import com.txps.bus.service.ISalesbackService;
 import com.txps.bus.vo.SalesbackVo;
 import com.txps.sys.common.DataGridView;
@@ -38,7 +38,7 @@ public class SalesbackController {
     private ICustomerService customerService;
 
     @Autowired
-    private IGoodsService goodsService;
+    private IGoodsService2 goodsService;
 
     /**
      * 添加退货信息
@@ -85,7 +85,7 @@ public class SalesbackController {
                 //设置客户姓名
                 salesback.setCustomername(customer.getCustomername());
             }
-            Goods goods = goodsService.getById(salesback.getGoodsid());
+            Goods2 goods = goodsService.getById(salesback.getGoodsid());
             if (goods!=null){
                 //设置商品名称
                 salesback.setGoodsname(goods.getGoodsname());

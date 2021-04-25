@@ -2,6 +2,7 @@ package com.txps.bus.cache;
 
 import com.txps.bus.entity.Customer;
 import com.txps.bus.entity.Goods;
+import com.txps.bus.entity.Goods2;
 import com.txps.sys.cache.CachePool;
 import org.apache.commons.logging.Log;
 import org.apache.commons.logging.LogFactory;
@@ -187,7 +188,7 @@ public class BusinessCacheAspect {
             return res1;
         }else {
             log.info("未从缓存里面找到商品对象，从数据库中查询并放入缓存");
-            Goods res2 =(Goods) joinPoint.proceed();
+            Goods2 res2 =(Goods2) joinPoint.proceed();
             CACHE_CONTAINER.put(CACHE_GOODS_PROFIX+res2.getId(),res2);
             return res2;
         }
