@@ -5,6 +5,7 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.txps.bus.entity.CommercialTenantGoods;
 import com.txps.bus.service.ICommercialTenantGoodsService;
 import com.txps.bus.vo.CommercialTenantGoodsVo;
+import com.txps.bus.vo.CommercialTenantVo;
 import com.txps.sys.common.DataGridView;
 import com.txps.sys.common.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -50,6 +51,22 @@ public class CommercialTenantGoodsController {
         } catch (Exception e) {
             e.printStackTrace();
             return ResultObj.ADD_ERROR;
+        }
+    }
+
+    /**
+     * 修改一个商户商品
+     * @param ctGoodsVo
+     * @return
+     */
+    @RequestMapping("updateCtGoods")
+    public ResultObj updateCustomer(CommercialTenantGoodsVo ctGoodsVo){
+        try {
+            commercialTenantGoodsService.updateById(ctGoodsVo);
+            return ResultObj.UPDATE_SUCCESS;
+        } catch (Exception e) {
+            e.printStackTrace();
+            return ResultObj.UPDATE_ERROR;
         }
     }
 }

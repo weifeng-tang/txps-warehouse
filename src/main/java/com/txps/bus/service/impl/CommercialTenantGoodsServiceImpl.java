@@ -55,4 +55,10 @@ public class CommercialTenantGoodsServiceImpl extends ServiceImpl<CommercialTena
         entity.setCreateTime(new Date());
         return super.save(entity);
     }
+
+    @Override
+    public boolean updateById(CommercialTenantGoods entity) {
+        entity.setUpdateTime(new Date());
+        return super.updateById(entity);
+    }
 }
