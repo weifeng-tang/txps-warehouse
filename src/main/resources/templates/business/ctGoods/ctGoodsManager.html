@@ -95,12 +95,12 @@
         </button>
     </div>
     <div id="goodsRowBar" style="display: none;">
-        <button type="button" lay-event="update" shiro:hasPermission="goods:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
+        <button type="button" lay-event="update" shiro:hasPermission="ct_goods:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>编辑
         </button>
-        <!--<button type="button" lay-event="delete" shiro:hasPermission="goods:delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
-                class="layui-icon layui-icon-delete"></i>删除
-        </button>-->
+        <button type="button" lay-event="updateLog" shiro:hasPermission="ct_goods:update_log" class="layui-btn layui-btn-sm layui-btn-radius"><i
+                class="layui-icon layui-icon-date"></i>修改记录
+        </button>
     </div>
 </div>
 
@@ -233,7 +233,7 @@
                 {field: 'goodsName', title: '所属商品名称', align: 'center',width:'200'},
                 {field: 'createTime', title: '创建时间', align: 'center',width:'200'},
                 {field: 'updateTime', title: '更新时间', align: 'center',width:'200'},
-                {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'180'}
+                {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'250'}
             ] ],
             done: function (data, curr, count) {
                 //不是第一页时，如果当前返回的数据为0那么就返回上一页
@@ -288,8 +288,8 @@
             //获取当前行数据
             var data = obj.data;
             switch (obj.event) {
-                case 'delete':
-                    deleteGoods(data);
+                case 'updateLog':
+                    updateLog(data);
                     break;
                 case 'update':
                     updateGoods(data);
@@ -452,19 +452,10 @@
 
 
 
-        //删除
-        function deleteGoods(data) {
-            layer.confirm('你确定要删除【' + data.goodsname + '】这个商品吗？删除该商品，其商品进货、商品退货、商品销售、商品销售退货将会同步删除！', {icon: 3, title: '提示'}, function (index) {
-                $.post("/goods/deleteGoods", {id: data.id,goodsimg:data.goodsimg},function (res) {
-                    if (res.code == 200) {
-                        tableIns.reload({
-                            where:"",
-                        });
-                    }
-                    layer.msg(res.msg);
-                });
-                layer.close(index);
-            });
+        //查询修改记录
+        function updateLog(data) {
+            console.log("nihaoshijie")
+
         }
 
         form.on("select(goodsType)",function (data) {
