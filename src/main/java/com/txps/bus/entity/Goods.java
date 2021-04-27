@@ -70,7 +70,7 @@ public class Goods implements Serializable {
     /**
      * 状态
      */
-    private Integer status;
+    private Integer isCollectTotal;
 
     /**
      * 创建时间

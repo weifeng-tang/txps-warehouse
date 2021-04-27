@@ -113,7 +113,7 @@
                     <div class="layui-form-item magt3">
                         <label class="layui-form-label">所属商户</label>
                         <div class="layui-input-inline">
-                            <select name="commercialTenantId" id="select_ct_list">
+                            <select name="commercialTenantId" id="select_ct_list" lay-filter="select_ct_list">
 
                             </select>
                         </div>
@@ -198,6 +198,7 @@
 
 <script type="text/javascript">
 
+
     //提升数据表格的作用域，因为底下还有一个reloadTable方法
     var tableIns;
 
@@ -207,6 +208,7 @@
         var layer = layui.layer;
         var table = layui.table;
         var upload = layui.upload;
+
 
         //初始化表格 加载数据
         tableIns = table.render({
@@ -228,6 +230,7 @@
                 {field: 'type', title: '商品类型', align: 'center',width:'150', templet:function (d) {
                         return d.type==0?'<span>蔬菜</span>':d.type==1?'<span>冰鲜</span>':d.type==2?'<span>干货</span>':d.type==3?'<span>消耗</span>':'<span >未知</span>';
                     }},
+                {field: 'goodsName', title: '所属商品名称', align: 'center',width:'200'},
                 {field: 'createTime', title: '创建时间', align: 'center',width:'200'},
                 {field: 'updateTime', title: '更新时间', align: 'center',width:'200'},
                 {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'180'}
@@ -371,7 +374,7 @@
                     //装载新的数据
                     form.val("dataFrm",data);
                     console.log(data);
-
+                    let goodsId = data.goodsId;
                     $.get("/goods/loadAllGoodsForSelect?goodsType=" + data.type, function(res){
                         var data=res.data;
                         var dom=$("#select_affiliated_goods");
@@ -380,12 +383,38 @@
                             html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
                         });
                         dom.html(html);
+                        if (goodsId != undefined){
+                            dom.val(goodsId);
+                        }
                         form.render("select");
                     });
 
-                    $("#select_affiliated_goods").find("option[value="+data.goodsId+"]").prop("selected",true);
-                    form.render();
 
+                    let commercialTenantId = data.commercialTenantId;
+                    $.get("/customer/loadAllCustomerForSelect",function (res) {
+                        var data = res.data;
+                        var dom = $("#select_ct_list");
+                        var html = '';
+                        $.each(data,function (index, item) {
+                            console.log(commercialTenantId);
+                            console.log(item.id + " -> " + item.name);
+                            console.log(commercialTenantId == item.id);
+                            html += '<option value="'+item.id+'">'+item.name+'</option>';
+                        })
+                        dom.html(html);
+                        //重新渲染下拉列表
+                        if (commercialTenantId != undefined){
+                            dom.val(commercialTenantId);
+                        }
+                        form.render("select");
+                    });
+
+
+                    /*var value =  data.commercialTenantId;
+                    console.log("12345: " + value);
+                    $('#select_ct_list').find("option[value="+value+"]").attr("selected",true);
+                    form.render('select');
+*/
                     //图片进行回显
                     /*$(".thumbImg").attr("src",'/file/showImageByPath?path='+data.goodsimg);*/
                     //下拉列表的回显

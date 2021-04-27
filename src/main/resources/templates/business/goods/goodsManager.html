@@ -157,10 +157,10 @@
                     </div>
                 </div>-->
                 <div class="layui-inline">
-                    <label class="layui-form-label">是否可用</label>
+                    <label class="layui-form-label">是否汇总统计</label>
                     <div class="layui-input-inline">
-                        <input type="radio" name="status" value="1" title="可用" checked="">
-                        <input type="radio" name="status" value="0" title="不可用" >
+                        <input type="radio" name="isCollectTotal" value="1" title="是" checked="">
+                        <input type="radio" name="isCollectTotal" value="0" title="否" >
                     </div>
                 </div>
             </div>
@@ -210,6 +210,9 @@
                 }},
                 {field: 'number', title: '商品库存', align: 'center',width:'150'},
                 {field: 'dangerNum', title: '库存预警值', align: 'center',width:'90'},
+                {field: 'isCollectTotal', title: '是否汇总统计', align: 'center',width:'180', templet:function (d) {
+                        return d.type==0?'否':'是';
+                }},
                 {field: 'createTime', title: '创建时间', align: 'center',width:'200'},
                 {field: 'updateTime', title: '更新时间', align: 'center',width:'200'},
                 {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'180'}

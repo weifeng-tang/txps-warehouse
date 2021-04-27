@@ -14,10 +14,11 @@
         <result column="type" property="unitPrice"/>
         <result column="description" property="description"/>
         <result column="goods_id" property="goodsId"/>
+        <result column="goods_name" property="goodsName"/>
     </resultMap>
 
     <select id="queryPageByCondition" resultType="com.txps.bus.entity.CommercialTenantGoods">
-        select bctg.id, bctg.commercial_tenant_id, bctg.goods_id, bctg.goods_another_name, bctg.unit_price, bctg.specification, bctg.`status`, bctg.create_time, bctg.update_time, bg.type, bg.description
+        select bctg.id, bctg.commercial_tenant_id, bctg.goods_id, bctg.goods_another_name, bctg.unit_price, bctg.specification, bctg.`status`, bctg.create_time, bctg.update_time, bg.type, bg.description, bg.goods_name
         from bus_commercial_tenant_goods bctg
         left join bus_goods bg
         on bctg.goods_id = bg.id

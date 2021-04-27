@@ -89,6 +89,13 @@ public class CommercialTenantGoods implements Serializable {
     /**
      * 关联商户名称
      */
+    @TableField(exist = false)
     private String commercialTenantName;
+
+    /**
+     * 直属(上级)商品名称
+     */
+    @TableField(exist = false)
+    private String goodsName;
 
 }

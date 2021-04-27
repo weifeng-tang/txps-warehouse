@@ -113,7 +113,6 @@ public class GoodsController {
     public DataGridView loadAllGoodsForSelect(Integer goodsType){
         QueryWrapper<Goods> queryWrapper = new QueryWrapper<>();
         queryWrapper.eq(goodsType != null, "type", goodsType);
-        queryWrapper.eq("status",Constast.AVAILABLE_TRUE);
         return new DataGridView(goodsService.list(queryWrapper));
     }
 
