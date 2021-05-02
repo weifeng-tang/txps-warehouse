@@ -84,6 +84,13 @@ public class BusinessController {
         return "business/ctGoods/ctGoodsManager";
     }
 
-
+    /**
+     * 跳转到商户商品管理页面
+     * @return
+     */
+    @RequestMapping("toGSCManager")
+    public String toGSCManager(){
+        return "business/goodsSpecConvert/goodsSpecConvertManager";
+    }
 
 }

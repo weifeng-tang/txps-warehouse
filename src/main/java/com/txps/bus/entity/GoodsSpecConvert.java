@@ -1,6 +1,7 @@
 package com.txps.bus.entity;
 
 import com.baomidou.mybatisplus.annotation.IdType;
+import com.baomidou.mybatisplus.annotation.TableField;
 import com.baomidou.mybatisplus.annotation.TableId;
 import com.baomidou.mybatisplus.annotation.TableName;
 import lombok.Data;
@@ -8,6 +9,7 @@ import lombok.EqualsAndHashCode;
 import lombok.experimental.Accessors;
 
 import java.io.Serializable;
+import java.math.BigDecimal;
 import java.util.Date;
 
 /**
@@ -16,13 +18,13 @@ import java.util.Date;
  * </p>
  *
  * @author Wayne
- * @since 2021-04-24
+ * @since 2021-05-03
  */
 @Data
 @EqualsAndHashCode(callSuper = false)
 @Accessors(chain = true)
-@TableName("bus_goods")
-public class Goods implements Serializable {
+@TableName("bus_goods_spec_convert")
+public class GoodsSpecConvert implements Serializable {
 
     private static final long serialVersionUID=1L;
 
@@ -33,49 +35,29 @@ public class Goods implements Serializable {
     private Long id;
 
     /**
-     * 商品名称
+     * 商品id
      */
-    private String goodsName;
+    private Long goodsId;
 
     /**
-     * 供应商id
+     * 转换规格
      */
-    private Integer providerId;
+    private String convertSpec;
 
     /**
-     * 商品图片
+     * 转换比率
      */
-    private String goodsImg;
+    private BigDecimal convertRatio;
 
     /**
-     * 商品基础规格
+     * 说明
      */
-    private String basedSpecifications;
+    private String convertExplain;
 
     /**
-     * 商品类型
+     * 状态
      */
-    private Integer type;
-
-    /**
-     * 商品库存
-     */
-    private Integer number;
-
-    /**
-     * 商品库存预警值
-     */
-    private Integer dangerNum;
-
-    /**
-     * 商品描述
-     */
-    private String description;
-
-    /**
-     * 是否汇总合计
-     */
-    private Integer isCollectTotal;
+    private Integer status;
 
     /**
      * 创建时间
@@ -86,6 +68,18 @@ public class Goods implements Serializable {
      * 更新时间
      */
     private Date updateTime;
+
+    /**
+     * 商品名称
+     */
+    @TableField(exist = false)
+    private String goodsName;
+
+    /**
+     * 商品类型
+     */
+    @TableField(exist = false)
+    private Integer goodsType;
 
 
 }

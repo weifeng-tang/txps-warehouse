@@ -57,13 +57,20 @@
 
             <label class="layui-form-label">商品类型</label>
             <div class="layui-input-inline">
-                <select name="type" id="queryGoodsType">
+                <select name="goodsType" id="queryGoodsType">
                     <option value="">全部</option>
                     <option value="0">蔬菜</option>
                     <option value="1">冰鲜</option>
                     <option value="2">干货</option>
                     <option value="3">消耗</option>
                 </select>
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">转换规格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="convertSpec" id="convertSpec" class="layui-input input-radius"
+                       placeholder="请输入转换规格">
             </div>
         </div>
     </div>
@@ -83,12 +90,12 @@
 <div>
     <table class="layui-hide" id="goodsTable" lay-filter="goodsTable"></table>
     <div id="goodsToolBar" style="display: none">
-        <button type="button" lay-event="add" shiro:hasPermission="goods:create" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+        <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>添加商品
         </button>
     </div>
     <div id="goodsRowBar" style="display: none;">
-        <button type="button" lay-event="update" shiro:hasPermission="goods:update" class="layui-btn layui-btn-sm layui-btn-radius"><i
+        <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>编辑
         </button>
         <!--<button type="button" lay-event="delete" shiro:hasPermission="goods:delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
@@ -114,7 +121,7 @@
                     <div class="layui-form-item magt3">
                         <label class="layui-form-label">商品类型</label>
                         <div class="layui-input-inline">
-                            <select name="type" id="goodsType">
+                            <select name="goodsType" id="goodsType" lay-filter="goodsType">
                                 <option value="0">蔬菜</option>
                                 <option value="1">冰鲜</option>
                                 <option value="2">干货</option>
@@ -122,52 +129,44 @@
                             </select>
                         </div>
                     </div>
+                    <div class="layui-form-item magt3">
+                        <label class="layui-form-label">所属商品</label>
+                        <div class="layui-input-inline">
+                            <select name="goodsId" id="select_affiliated_goods">
+
+                            </select>
+                        </div>
+                    </div>
                     <div class="layui-form-item">
-                        <label class="layui-form-label">商品名称</label>
+                        <label class="layui-form-label">转换规格</label>
                         <div class="layui-input-inline">
                             <input type="hidden" name="id">
-                            <input type="text" class="layui-input input-radius" name="goodsName" lay-verify="required" placeholder="请输入商品名称">
+                            <input type="text" class="layui-input input-radius" name="convertSpec" lay-verify="required" placeholder="请输入商品转换规格">
                         </div>
                     </div>
+
                     <div class="layui-form-item">
-                        <label class="layui-form-label">商品基础规格</label>
+                        <label class="layui-form-label">转换比率</label>
                         <div class="layui-input-inline">
-                            <input type="hidden" name="id">
-                            <input type="text" class="layui-input input-radius" name="basedSpecifications" lay-verify="required" placeholder="请输入商品基础规格">
+                            <input type="text" class="layui-input input-radius" name="convertRatio" lay-verify="required|number" placeholder="请输入转换比率">
                         </div>
                     </div>
+
+
                     <div class="layui-form-item">
-                        <label class="layui-form-label">商品描述</label>
+                        <label class="layui-form-label">说明</label>
                         <div class="layui-input-inline">
-                            <input type="text" class="layui-input input-radius" name="description" lay-verify="required" placeholder="请输入商品描述">
-                        </div>
-                    </div>
-                    <div class="layui-form-item">
-                        <label class="layui-form-label">预警值</label>
-                        <div class="layui-input-inline">
-                            <input type="text" class="layui-input input-radius" name="dangerNum" lay-verify="required|number" placeholder="请输入商品预警值">
+                            <input type="text" class="layui-input input-radius" name="convertExplain" lay-verify="required" placeholder="请输入对应说明">
                         </div>
                     </div>
                 </div>
-                <!--<div class="layui-col-md3 layui-col-xs5">
-                    <div class="layui-upload-list thumbBox mag0 magt3">
-                        <input type="hidden" name="goodsimg" id="goodsimg" value="images/noDefaultImage.jpg">
-                        <img class="layui-upload-img thumbImg" src="/file/showImageByPath?path=images/noDefaultImage.jpg">
-                    </div>
-                </div>-->
             </div>
             <div class="layui-form-item magb0">
-                <!--<div class="layui-inline">
-                    <label class="layui-form-label">预警值</label>
-                    <div class="layui-input-inline">
-                        <input type="text" class="layui-input input-radius" name="dangerNum" lay-verify="required|number" placeholder="请输入商品预警值">
-                    </div>
-                </div>-->
                 <div class="layui-inline">
-                    <label class="layui-form-label">是否汇总统计</label>
+                    <label class="layui-form-label">状态</label>
                     <div class="layui-input-inline">
-                        <input type="radio" name="isCollectTotal" value="1" title="是" checked="">
-                        <input type="radio" name="isCollectTotal" value="0" title="否" >
+                        <input type="radio" name="status" value="1" title="可用" checked="">
+                        <input type="radio" name="status" value="0" title="不可用" >
                     </div>
                 </div>
             </div>
@@ -203,24 +202,24 @@
         //初始化表格 加载数据
         tableIns = table.render({
             elem: "#goodsTable",
-            title: "基础商品表",
-            url: "/goods/loadAllGoods",
+            title: "商品规格转换表",
+            url: "/goodsSpecConvert/loadAllGoods",
             toolbar: "#goodsToolBar",
             page: true,
             height: "full-180",
             cols: [ [
-                {field: 'id', title: 'ID', align: 'center',width:'50'},
+                {field: '', title: '序号', align: 'center',width:'50', type:'numbers'},
+                {field: 'id', title: 'ID', hide:true},
                 {field: 'goodsName', title: '商品名称', align: 'center',width:'150'},
                 {field: 'type', title: '商品类型', align: 'center',width:'150', templet:function (d) {
-                        return d.type==0?'<span>蔬菜</span>':d.type==1?'<span>冰鲜</span>':d.type==2?'<span>干货</span>':d.type==3?'<span>消耗</span>':'<span >未知</span>';
+                        return d.goodsType==0?'<span>蔬菜</span>':d.goodsType==1?'<span>冰鲜</span>':d.goodsType==2?'<span>干货</span>':d.goodsType==3?'<span>消耗</span>':'<span >未知</span>';
                 }},
-                {field: 'basedSpecifications', title: '商品基础规格', align: 'center',width:'150'},
-                {field: 'number', title: '商品库存', align: 'center',width:'150'},
-                {field: 'dangerNum', title: '库存预警值', align: 'center',width:'90'},
-                {field: 'isCollectTotal', title: '是否汇总统计', align: 'center',width:'180', templet:function (d) {
-                        return d.type==0?'否':'是';
-                }},
-                {field: 'description', title: '商品描述', align: 'center',width:'150'},
+                {field: 'convertSpec', title: '转换规格', align: 'center',width:'150'},
+                {field: 'convertRatio', title: '转换比率', align: 'center',width:'150'},
+                {field: 'convertExplain', title: '说明', align: 'center',width:'150'},
+                {field: 'status', title: '状态', align: 'center',width:'90', templet:function (d) {
+                        return d.status==0?'<span>不可用</span>':'<span>可用</span>';
+                    }},
                 {field: 'createTime', title: '创建时间', align: 'center',width:'200'},
                 {field: 'updateTime', title: '更新时间', align: 'center',width:'200'},
                 {fixed: 'right', title: '操作', toolbar: '#goodsRowBar', align: 'center',width:'180'}
@@ -312,23 +311,23 @@
                 type:1,
                 content:$("#addOrUpdateDiv"),
                 area:['700px','500px'],
-                title:'添加商品',
+                title:'添加商品转换规格',
                 success:function () {
                     $("#dataFrm")[0].reset();
-                    url="/goods/addGoods";
-                    /*$.get("/provider/loadAllProviderForSelect",function(res){
+                    url="/goodsSpecConvert/addGoodsSpecConvert";
+                    var myselect=document.getElementById("goodsType");
+                    var index=myselect.selectedIndex;
+                    let value = myselect.options[index].value;
+                    $.get("/goods/loadAllGoodsForSelect?goodsType=" + value, function(res){
                         var data=res.data;
-                        var dom=$("#providerid");
-                        var html='<option value="0">请选择供应商</option>'
+                        var dom=$("#select_affiliated_goods");
+                        var html=''
                         $.each(data,function(index,item){
-                            html+='<option value="'+item.id+'">'+item.providername+'</option>'
+                            html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
                         });
                         dom.html(html);
                         form.render("select");
-                    });*/
-                    //设置默认为无图片
-                    /*$(".thumbImg").attr("src",'/file/showImageByPath?path=images/noDefaultImage.jpg');
-                    $("#goodsimg").val('/images/noDefaultImage.jpg');*/
+                    });
                 }
             });
         }
@@ -339,30 +338,29 @@
                 type:1,
                 content:$("#addOrUpdateDiv"),
                 area:['700px','500px'],
-                title:'修改商品',
+                title:'修改商品转换规格',
                 success:function () {
                     //清空原有的数据
                     $("#dataFrm")[0].reset();
                     //装载新的数据
                     form.val("dataFrm",data);
-                    //图片进行回显
-                    $(".thumbImg").attr("src",'/file/showImageByPath?path='+data.goodsimg);
-                    //下拉列表的回显
-                    $.get("/provider/loadAllProviderForSelect",function(res){
-                        var redata=res.data;
-                        var dom=$("#providerid");
-                        var html='<option value="0">请选择供应商</option>'
-                        $.each(redata,function(index,item){
-                            if (data.providerid===item.id){
-                                html+='<option value="'+item.id+'" selected>'+item.providername+'</option>'
-                            }else {
-                                html+='<option value="'+item.id+'">'+item.providername+'</option>'
-                            }
+                    console.log(data)
+                    let goodsId = data.goodsId;
+                    console.log(goodsId)
+                    $.get("/goods/loadAllGoodsForSelect?goodsType=" + data.goodsType, function(res){
+                        var data=res.data;
+                        var dom=$("#select_affiliated_goods");
+                        var html=''
+                        $.each(data,function(index,item){
+                            html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
                         });
                         dom.html(html);
+                        if (goodsId != undefined){
+                            dom.val(goodsId);
+                        }
                         form.render("select");
                     });
-                    url="/goods/updateGoods";
+                    url="/goodsSpecConvert/updateGoodsSpecConvert";
                 }
             });
         }
@@ -392,6 +390,27 @@
                 layer.close(index);
             });
         }
+
+        form.on("select(goodsType)",function (data) {
+            console.log("你好世界");
+            var myselect=document.getElementById("goodsType");
+            var index=myselect.selectedIndex;
+            let value = myselect.options[index].value;
+            console.log(myselect);
+            console.log(index);
+            console.log(value)
+
+            $.get("/goods/loadAllGoodsForSelect?goodsType=" + value, function(res){
+                var data=res.data;
+                var dom=$("#select_affiliated_goods");
+                var html=''
+                $.each(data,function(index,item){
+                    html+='<option value="'+item.id+'">'+item.goodsName+'</option>'
+                });
+                dom.html(html);
+                form.render("select");
+            });
+        });
 
 
     });

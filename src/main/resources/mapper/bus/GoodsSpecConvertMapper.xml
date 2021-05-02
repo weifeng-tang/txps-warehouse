@@ -1,0 +1,36 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.txps.bus.mapper.GoodsSpecConvertMapper">
+    <resultMap id="BaseResultMap" type="com.txps.bus.entity.GoodsSpecConvert">
+        <id column="id" property="id"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="convert_spec" property="convertSpec"/>
+        <result column="convert_ratio" property="convertRatio"/>
+        <result column="convert_explain" property="convertExplain"/>
+        <result column="status" property="status"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="goods_name" property="goodsName"/>
+        <result column="type" property="goodsType"/>
+    </resultMap>
+
+
+    <select id="queryPageByCondition" resultMap="BaseResultMap">
+        select bgsc.id, bgsc.goods_id, bgsc.convert_spec, bgsc.convert_ratio, bgsc.convert_explain, bgsc.status, bgsc.create_time, bgsc.update_time, bg.goods_name, bg.type
+        from bus_goods_spec_convert bgsc
+        left join bus_goods bg
+        on bg.id = bgsc.goods_id
+        <where>
+            <if test="gscv.convertSpec != null and gscv.convertSpec !=''">
+                and bgsc.convert_spec = #{gscv.convertSpec}
+            </if>
+            <if test="gscv.goodsType != null">
+                and bg.type = #{gscv.goodsType}
+            </if>
+            <if test="gscv.goodsName != null and gscv.goodsName !=''">
+                and bg.goods_name like CONCAT('%',#{gscv.goodsName},'%')
+            </if>
+        </where>
+        order by bgsc.id desc
+    </select>
+</mapper>
