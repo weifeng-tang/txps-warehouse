@@ -43,7 +43,7 @@ public class MenuController {
         queryWrapper.eq("type",Constast.TYPE_MENU);
         //菜单必须可用
         queryWrapper.eq("available", Constast.AVAILABLE_TRUE);
-
+        queryWrapper.orderByAsc("ordernum");
         //获得用户  判断用户的类型
         User user = (User) WebUtils.getSession().getAttribute("user");
         List<Permission> list = null;

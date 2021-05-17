@@ -5,12 +5,13 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.txps.bus.entity.CommercialTenantGoods;
 import com.txps.bus.service.ICommercialTenantGoodsService;
 import com.txps.bus.vo.CommercialTenantGoodsVo;
-import com.txps.bus.vo.CommercialTenantVo;
 import com.txps.sys.common.DataGridView;
 import com.txps.sys.common.ResultObj;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
+
+import java.util.List;
 
 /**
  * <p>
@@ -36,6 +37,18 @@ public class CommercialTenantGoodsController {
     public DataGridView loadAllGoods(CommercialTenantGoodsVo ctGoodsVo){
         IPage<CommercialTenantGoods> page = commercialTenantGoodsService.queryPageByCondition(ctGoodsVo);
         return new DataGridView(page.getTotal(),page.getRecords());
+    }
+
+    /**
+     * 查询商户商品
+     * @param ctId 商户id
+     * @param goodsType 商品类型
+     * @return
+     */
+    @RequestMapping("loadAllGoodsForSelect")
+    public DataGridView loadAllGoodsForSelect(Long ctId, Integer goodsType){
+        List<CommercialTenantGoods> list = commercialTenantGoodsService.loadAllGoodsForSelect(ctId, goodsType);
+        return new DataGridView(list);
     }
 
     /**

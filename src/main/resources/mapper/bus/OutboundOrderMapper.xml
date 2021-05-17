@@ -1,0 +1,61 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.txps.bus.mapper.OutboundOrderMapper">
+
+    <resultMap id="BaseResultMap" type="com.txps.bus.entity.OutboundOrder">
+        <id column="id" property="id"/>
+        <result column="ct_id" property="ctId"/>
+        <result column="ct_goods_id" property="ctGoodsId"/>
+        <result column="goods_id" property="goodsId"/>
+        <result column="order_spec" property="orderSpec"/>
+        <result column="order_quantity" property="orderQuantity"/>
+        <result column="actual_outbound_spec" property="actualOutboundSpec"/>
+        <result column="actual_spec_order_quantity" property="actualSpecOrderQuantity"/>
+        <result column="actual_outbound_quantity" property="actualOutboundQuantity"/>
+        <result column="order_time" property="orderTime"/>
+        <result column="ct_goods_unit_price_that_day" property="ctGoodsUnitPriceThatDay"/>
+        <result column="amount" property="amount"/>
+        <result column="status" property="status"/>
+        <result column="ct_order_type" property="ctOrderType"/>
+        <result column="remark" property="remark"/>
+        <result column="create_time" property="createTime"/>
+        <result column="update_time" property="updateTime"/>
+        <result column="name" property="ctName"/>
+        <result column="type" property="goodsType"/>
+        <result column="goods_another_name" property="goodsAnotherName"/>
+    </resultMap>
+
+    <select id="pageList" resultMap="BaseResultMap">
+        select boo.id, boo.ct_id, boo.ct_goods_id,  boo.goods_id, boo.order_spec, boo.order_quantity, boo.actual_outbound_spec, boo.actual_spec_order_quantity, boo.actual_outbound_quantity, boo.order_time, boo.ct_goods_unit_price_that_day, boo.amount,
+               boo.status, boo.ct_order_type, boo.remark, boo.create_time, boo.update_time, bct.name,
+               bg.type, bctg.goods_another_name
+        from bus_outbound_order boo
+        left join bus_commercial_tenant bct
+        on boo.ct_id = bct.id
+        left join bus_goods bg
+        on boo.goods_id = bg.id
+        left join bus_commercial_tenant_goods bctg
+        on boo.ct_goods_id = bctg.id
+        <where>
+            <if test="outboundOrderVo.startTime != null">
+                and boo.order_time &gt;= #{outboundOrderVo.startTime}
+            </if>
+            <if test="outboundOrderVo.endTime != null">
+                and boo.order_time &lt;= #{outboundOrderVo.endTime}
+            </if>
+            <if test="outboundOrderVo.type != null">
+                and bg.type = #{outboundOrderVo.type}
+            </if>
+            <if test="outboundOrderVo.ctGoodsName != null and outboundOrderVo.ctGoodsName !=''">
+                and bctg.goods_another_name like CONCAT('%',#{outboundOrderVo.ctGoodsName},'%')
+            </if>
+            <if test="outboundOrderVo.status != null">
+                and boo.status = #{outboundOrderVo.status}
+            </if>
+            <if test="outboundOrderVo.ctId != null">
+                and boo.ct_id = #{outboundOrderVo.ctId}
+            </if>
+        </where>
+        order by id desc
+    </select>
+</mapper>

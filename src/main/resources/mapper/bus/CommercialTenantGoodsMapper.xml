@@ -35,5 +35,20 @@
         </where>
         order by bctg.id desc
     </select>
+    <select id="loadAllGoodsForSelect" resultType="com.txps.bus.entity.CommercialTenantGoods">
+        select bctg.id, bctg.goods_another_name,bctg.commercial_tenant_id, bg.type
+        from bus_commercial_tenant_goods bctg
+        left join bus_goods bg
+        on bctg.goods_id = bg.id
+        <where>
+            <if test="ctId != null">
+                and bctg.commercial_tenant_id = #{ctId}
+            </if>
+            <if test="goodsType != null">
+                and bg.type = #{goodsType}
+            </if>
+        </where>
+        order by id desc
+    </select>
 
 </mapper>

@@ -58,12 +58,12 @@ public class BusinessController {
     }
 
     /**
-     * 跳转到商品销售管理页面
+     * 跳转到出库订单管理页面
      * @return
      */
-    @RequestMapping("toSalesManager")
-    public String toSalesManager(){
-        return "business/sales/salesManager";
+    @RequestMapping("toOutboundOrderManager")
+    public String toOutboundOrderManager(){
+        return "business/outboundOrder/outboundOrderManager";
     }
 
     /**

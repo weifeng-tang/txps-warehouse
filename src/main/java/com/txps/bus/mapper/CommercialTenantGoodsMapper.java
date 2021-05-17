@@ -7,6 +7,8 @@ import com.txps.bus.entity.CommercialTenantGoods;
 import com.txps.bus.vo.CommercialTenantGoodsVo;
 import org.apache.ibatis.annotations.Param;
 
+import java.util.List;
+
 /**
  * <p>
  *  Mapper 接口
@@ -24,4 +26,12 @@ public interface CommercialTenantGoodsMapper extends BaseMapper<CommercialTenant
      * @return
      */
     IPage<CommercialTenantGoods> queryPageByCondition(Page page, @Param("ctGoods")CommercialTenantGoodsVo ctGoodsVo);
+
+    /**
+     * 根据条件查询商户商品信息
+     * @param ctId
+     * @param goodsType
+     * @return
+     */
+    List<CommercialTenantGoods> loadAllGoodsForSelect(@Param("ctId")Long ctId, @Param("goodsType")Integer goodsType);
 }

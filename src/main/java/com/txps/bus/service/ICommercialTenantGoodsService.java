@@ -5,6 +5,8 @@ import com.baomidou.mybatisplus.extension.service.IService;
 import com.txps.bus.entity.CommercialTenantGoods;
 import com.txps.bus.vo.CommercialTenantGoodsVo;
 
+import java.util.List;
+
 /**
  * <p>
  *  服务类
@@ -16,4 +18,6 @@ import com.txps.bus.vo.CommercialTenantGoodsVo;
 public interface ICommercialTenantGoodsService extends IService<CommercialTenantGoods> {
 
     IPage<CommercialTenantGoods> queryPageByCondition(CommercialTenantGoodsVo commercialTenantGoodsVo);
+
+    List<CommercialTenantGoods> loadAllGoodsForSelect(Long ctId, Integer goodsType);
 }
