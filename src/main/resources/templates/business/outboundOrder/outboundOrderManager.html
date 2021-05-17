@@ -159,10 +159,10 @@
         <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>改单
         </button>
-        <button type="button" lay-event="delete" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+        <button type="button" lay-event="back" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>退货
         </button>
-        <button type="button" lay-event="back" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius"><i
+        <button type="button" lay-event="out" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>出库
         </button>
     </div>
@@ -254,21 +254,45 @@
 <!--退货的弹出层-->
 <div id="backGoodsDiv" style="display: none;padding-right: 3%">
     <form action="" method="post" class="layui-form" id="dataFrmBack" lay-filter="dataFrmBack">
+        <div class="layui-inline">
+            <label class="layui-form-label">商户名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ctName" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商户名称" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="goodsAnotherName" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商品名称" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实际下单规格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="orderSpec" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商品规格" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实际下单数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="orderQuantity" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入当前商品下单数目" disabled="disabled">
+            </div>
+        </div>
 
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">退货数量</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <input type="hidden" name="id">  <!-- 销售单ID  -->
-                    <input type="hidden" name="currentNumber" id="currentNumber">  <!-- 销售单中销售数量  -->
-                    <input type="text" name="number" lay-verify="required|checkNumber" autocomplete="off" class="layui-input input-radius" placeholder="请输入退货数量">
+                    <input type="hidden" name="actualSpecOrderQuantity" id="actualSpecOrderQuantity">  <!-- 销售单中销售数量  -->
+                    <input type="text" name="backNum" lay-verify="required|checkNumber" autocomplete="off" class="layui-input input-radius" placeholder="请输入退货数量">
                 </div>
             </div>
         </div>
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">退货备注</label>
-                <div class="layui-input-block">
+                <div class="layui-input-inline">
                     <textarea name="remark" placeholder="请输入退货备注" class="layui-textarea" cols="200" rows="8"></textarea>
                 </div>
             </div>
@@ -538,10 +562,13 @@
                 type:1,
                 content:$("#backGoodsDiv"),
                 area:['600px','400px'],
-                title:'商品销售退货',
+                title:'商品退货',
                 success:function () {
                     //清空原有的数据
                     $("#dataFrmBack")[0].reset();
+                    console.log(data);
+                    //装载新的数据
+                    form.val("dataFrmBack",data);
                     //装载新的数据   获得销售的ID以及当前销售单的销售数量
                     form.val("dataFrmBack",{id:data.id,currentNumber:data.number});
                 }
@@ -561,7 +588,17 @@
 
         //退货提交
         form.on("submit(doBackSubmit)",function (data) {
-            $.post("/salesback/addSalesback",data.field,function (res) {
+            console.log(data);
+            console.log(data.field.actualSpecOrderQuantity);
+            console.log(data.field.backNum);
+            if (data.field.actualSpecOrderQuantity < data.field.backNum){
+                layer.alert('退货数不允许大于下单数', {
+                    icon: 5,
+                    title: "退货失败"
+                });
+            }
+
+            $.post("/outboundOrder/backGoods",data.field,function (res) {
                 if (res.code==200){
                     //重新加载表格数据
                     tableIns.reload();
@@ -574,7 +611,6 @@
         })
 
         form.on("select(is_current_time)",function (data) {
-            console.log("你好世界");
             let value = $("#time").val();
             if (value == 1){
                 $(".start_and_end_time").css("display", "");
