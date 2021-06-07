@@ -3,6 +3,7 @@ package com.txps.bus.service;
 import com.txps.bus.entity.OutboundOrder;
 import com.baomidou.mybatisplus.extension.service.IService;
 import com.txps.bus.vo.OutboundOrderVo;
+import com.txps.bus.vo.SalesReturnOrderVo;
 import com.txps.sys.common.DataGridView;
 
 /**
@@ -27,4 +28,18 @@ public interface IOutboundOrderService extends IService<OutboundOrder> {
      * @return
      */
     Boolean addOutboundOrder(OutboundOrderVo ctGoodsVo);
+
+    /**
+     * 退货
+     * @param salesReturnOrderVo
+     * @return
+     */
+    Boolean salesReturn(SalesReturnOrderVo salesReturnOrderVo);
+
+    /**
+     * 发货
+     * @param outboundOrderVo
+     * @return
+     */
+    Boolean shipments(OutboundOrderVo outboundOrderVo);
 }

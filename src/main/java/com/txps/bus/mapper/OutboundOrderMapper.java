@@ -18,4 +18,6 @@ import org.apache.ibatis.annotations.Param;
 public interface OutboundOrderMapper extends BaseMapper<OutboundOrder> {
 
     IPage<OutboundOrder> pageList(Page page, @Param("outboundOrderVo") OutboundOrderVo outboundOrderVo);
+
+    OutboundOrder selectById(Long id);
 }

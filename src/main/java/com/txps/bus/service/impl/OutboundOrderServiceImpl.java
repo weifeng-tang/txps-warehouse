@@ -4,16 +4,11 @@ import com.baomidou.mybatisplus.core.conditions.query.QueryWrapper;
 import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
-import com.txps.bus.entity.CommercialTenantGoods;
-import com.txps.bus.entity.Goods;
-import com.txps.bus.entity.GoodsSpecConvert;
-import com.txps.bus.entity.OutboundOrder;
-import com.txps.bus.mapper.CommercialTenantGoodsMapper;
-import com.txps.bus.mapper.GoodsMapper;
-import com.txps.bus.mapper.GoodsSpecConvertMapper;
-import com.txps.bus.mapper.OutboundOrderMapper;
+import com.txps.bus.entity.*;
+import com.txps.bus.mapper.*;
 import com.txps.bus.service.IOutboundOrderService;
 import com.txps.bus.vo.OutboundOrderVo;
+import com.txps.bus.vo.SalesReturnOrderVo;
 import com.txps.sys.common.DataGridView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -42,6 +37,8 @@ public class OutboundOrderServiceImpl extends ServiceImpl<OutboundOrderMapper, O
     private GoodsMapper goodsMapper;
     @Autowired
     private GoodsSpecConvertMapper goodsSpecConvertMapper;
+    @Autowired
+    private SalesReturnOrderMapper salesReturnOrderMapper;
 
 
     @Override
@@ -92,6 +89,42 @@ public class OutboundOrderServiceImpl extends ServiceImpl<OutboundOrderMapper, O
         //创建时间
         outboundOrderVo.setCreateTime(new Date());
         return super.save(outboundOrderVo);
+    }
+
+    @Override
+    public Boolean salesReturn(SalesReturnOrderVo salesReturnOrderVo) {
+        //1.改单
+        Long outboundOrderId = salesReturnOrderVo.getOutboundOrderId();
+        if (outboundOrderId == null){
+            //todo 无此订单号
+        }
+        OutboundOrder outboundOrder = outboundOrderMapper.selectById(outboundOrderId);
+        if (ObjectUtils.isEmpty(outboundOrder)){
+            //todo 无此订单号
+        }
+        if (outboundOrder.getActualOutboundQuantity().compareTo(salesReturnOrderVo.getSalesReturnNum()) < 0) {
+            //todo 退货数必须少于或等于实际出货数
+        }
+        outboundOrder.setActualOutboundQuantity(outboundOrder.getActualOutboundQuantity().subtract(salesReturnOrderVo.getSalesReturnNum()));
+        outboundOrder.setUpdateTime(new Date());
+        outboundOrderMapper.updateById(outboundOrder);
+        //2.退货记录
+        salesReturnOrderVo.setCtId(outboundOrder.getCtId());
+        salesReturnOrderVo.setCtGoodsId(outboundOrder.getCtGoodsId());
+        salesReturnOrderVo.setActualOutboundSpec(outboundOrder.getActualOutboundSpec());
+        salesReturnOrderVo.setCreateTime(new Date());
+        salesReturnOrderMapper.insert(salesReturnOrderVo);
+        return true;
+    }
+
+    @Override
+    public Boolean shipments(OutboundOrderVo outboundOrderVo) {
+        OutboundOrder outboundOrder = outboundOrderMapper.selectById(outboundOrderVo.getId());
+        outboundOrder.setActualOutboundQuantity(outboundOrderVo.getActualOutboundQuantity());
+        outboundOrder.setAmount(outboundOrderVo.getActualOutboundQuantity().multiply(outboundOrder.getCtGoodsUnitPriceThatDay()));
+        outboundOrder.setStatus(2);
+        outboundOrder.setUpdateTime(new Date());
+        return outboundOrderMapper.updateById(outboundOrder) > 0;
     }
 
     @Override

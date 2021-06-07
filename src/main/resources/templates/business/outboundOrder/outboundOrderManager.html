@@ -155,7 +155,8 @@
             <i class="layui-icon layui-icon-add-1"></i>批量出库
         </button>
     </div>
-    <div id="salesRowBar" style="display: none;">
+    <!--<div id="salesRowBar" style="display: none;">
+
         <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
                 class="layui-icon layui-icon-edit"></i>改单
         </button>
@@ -165,7 +166,22 @@
         <button type="button" lay-event="out" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius"><i
                 class="layui-icon layui-icon-delete"></i>出库
         </button>
-    </div>
+    </div>-->
+    <script type="text/html" id="salesRowBar">
+        {{#  if(d.status == 1){ }}
+        <button type="button" lay-event="update" class="layui-btn layui-btn-sm layui-btn-radius"><i
+                class="layui-icon layui-icon-edit"></i>改单
+        </button>
+        {{# }if(d.status == 2) { }}
+        <button type="button" lay-event="back" class="layui-btn layui-btn-sm layui-btn-danger layui-btn-radius"><i
+                class="layui-icon layui-icon-delete"></i>退货
+        </button>
+        {{# }if(d.status == 1) { }}
+        <button type="button" lay-event="out" class="layui-btn layui-btn-sm layui-btn-warm layui-btn-radius"><i
+                class="layui-icon layui-icon-delete"></i>出库
+        </button>
+        {{#  } }}
+    </script>
 </div>
 
 <!--添加和修改弹出层-->
@@ -175,7 +191,7 @@
             <div class="layui-form-item magt3" style="display:none">
                 <label class="layui-form-label">ID</label>
                 <div class="layui-input-inline">
-                    <input type="text" name="id" lay-verify="required" class="layui-input input-radius">
+                    <input type="text" name="id" class="layui-input input-radius">
                 </div>
             </div>
             <div class="layui-form-item magt3">
@@ -273,9 +289,9 @@
             </div>
         </div>
         <div class="layui-inline">
-            <label class="layui-form-label">实际下单数</label>
+            <label class="layui-form-label">实际出货数</label>
             <div class="layui-input-inline">
-                <input type="text" name="orderQuantity" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入当前商品下单数目" disabled="disabled">
+                <input type="text" name="actualOutboundQuantity" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入当前商品下单数目" disabled="disabled">
             </div>
         </div>
 
@@ -283,9 +299,8 @@
             <div class="layui-inline">
                 <label class="layui-form-label">退货数量</label>
                 <div class="layui-input-inline">
-                    <input type="hidden" name="id">  <!-- 销售单ID  -->
-                    <input type="hidden" name="actualSpecOrderQuantity" id="actualSpecOrderQuantity">  <!-- 销售单中销售数量  -->
-                    <input type="text" name="backNum" lay-verify="required|checkNumber" autocomplete="off" class="layui-input input-radius" placeholder="请输入退货数量">
+                    <input type="hidden" name="outboundOrderId">  <!-- 销售单ID  -->
+                    <input type="text" name="salesReturnNum" lay-verify="required|checkNumber" autocomplete="off" class="layui-input input-radius" placeholder="请输入退货数量">
                 </div>
             </div>
         </div>
@@ -293,7 +308,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">退货备注</label>
                 <div class="layui-input-inline">
-                    <textarea name="remark" placeholder="请输入退货备注" class="layui-textarea" cols="200" rows="8"></textarea>
+                    <textarea name="salesReturnExplain" placeholder="请输入退货备注" class="layui-textarea" cols="200" rows="8"></textarea>
                 </div>
             </div>
         </div>
@@ -309,8 +324,57 @@
         </div>
     </form>
 </div>
-
-
+<!--出库的弹出层-->
+<div id="outDiv" style="display: none;padding-right: 3%">
+    <form action="" method="post" class="layui-form" id="dataFrmOut" lay-filter="dataFrmOut">
+        <div class="layui-inline" style="display:none">
+            <label class="layui-form-label">ID</label>
+            <div class="layui-input-inline">
+                <input type="text" name="id" class="layui-input input-radius">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商户名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="ctName" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商户名称" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">商品名称</label>
+            <div class="layui-input-inline">
+                <input type="text" name="goodsAnotherName" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商品名称" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实际下单规格</label>
+            <div class="layui-input-inline">
+                <input type="text" name="orderSpec" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商品规格" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实际规格下单数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="actualSpecOrderQuantity" lay-verify="required" class="layui-input input-radius" placeholder="请输入当前商品规格" disabled="disabled">
+            </div>
+        </div>
+        <div class="layui-inline">
+            <label class="layui-form-label">实际出货数</label>
+            <div class="layui-input-inline">
+                <input type="text" name="actualOutboundQuantity" lay-verify="required|number" autocomplete="off" class="layui-input input-radius" placeholder="请输入当前商品实际出库数目">
+            </div>
+        </div>
+        <div class="layui-form-item">
+            <div class="layui-input-block" style="text-align: center;padding-right: 7%">
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doOutSubmit" id="doOutSubmit"><i
+                        class="layui-icon layui-icon-search layui-icon-normal"></i>提交
+                </button>
+                <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
+                        class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                </button>
+            </div>
+        </div>
+    </form>
+</div>
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
 
 <script type="text/javascript">
@@ -352,7 +416,7 @@
                 {field: 'ctName', title: '商户名称', align: 'center',width:'150'},
                 {field: 'goodsAnotherName', title: '商品名称', align: 'center',width:'150'},
                 {field: 'type', title: '商品类型', align: 'center',width:'150', templet:function (d) {
-                        return d.goodsType==0?'<span>蔬菜</span>':d.type==1?'<span>冰鲜</span>':d.type==2?'<span>干货</span>':d.type==3?'<span>消耗</span>':'<span >未知</span>';
+                        return d.goodsType==0?'<span>蔬菜</span>':d.goodsType==1?'<span>冰鲜</span>':d.goodsType==2?'<span>干货</span>':d.goodsType==3?'<span>消耗</span>':'<span >未知</span>';
                 }},
                 {field: 'orderSpec', title: '下单规格', align: 'center',width:'150'},
                 {field: 'orderQuantity', title: '下单数', align: 'center',width:'150'},
@@ -408,8 +472,8 @@
             //获取当前行数据
             var data = obj.data;
             switch (obj.event) {
-                case 'delete':
-                    deleteSales(data);
+                case 'out':
+                    out(data);
                     break;
                 case 'update':
                     updateSales(data);
@@ -541,19 +605,25 @@
         });
 
 
-        //删除
-        function deleteSales(data) {
-            layer.confirm('你确定要删除这条销售信息吗？', {icon: 3, title: '提示'}, function (index) {
-                $.post("/sales/deleteSales", {id: data.id},function (res) {
-                    if (res.code == 200) {
-                        tableIns.reload({
-                            where:"",
-                        });
-                    }
-                    layer.msg(res.msg);
-                });
-                layer.close(index);
+        //发货
+        function out(data) {
+            //打开发货弹出框
+            mainIndex = layer.open({
+                type:1,
+                content:$("#outDiv"),
+                area:['600px','400px'],
+                title:'发货',
+                success:function () {
+                    //清空原有的数据
+                    $("#dataFrmOut")[0].reset();
+                    console.log(data);
+                    //装载新的数据
+                    form.val("dataFrmOut",data);
+                    //装载新的数据   获得销售的ID以及当前销售单的销售数量
+                    form.val("dataFrmOut",{outboundOrderId:data.id});
+                }
             });
+
         }
 
         //打开退货的弹出层
@@ -570,7 +640,7 @@
                     //装载新的数据
                     form.val("dataFrmBack",data);
                     //装载新的数据   获得销售的ID以及当前销售单的销售数量
-                    form.val("dataFrmBack",{id:data.id,currentNumber:data.number});
+                    form.val("dataFrmBack",{outboundOrderId:data.id});
                 }
             });
         }
@@ -578,10 +648,10 @@
         //自定义验证规则
         form.verify({
            checkNumber: function (value) {
-               var currentNumber = $("#currentNumber").val();
-               //value为退货的数量    currentNumber为当前销售单的数量
-               if (parseInt(value)>currentNumber||parseInt(value)<1){
-                   return '退货数量只能在【0】-【'+currentNumber+'】之间';
+               var salesReturnNum = $("#salesReturnNum").val();
+               //value为退货的数量    salesReturnNum
+               if (parseInt(value)>salesReturnNum||parseInt(value)<1){
+                   return '退货数量只能在【0】-【'+salesReturnNum+'】之间';
                }
            }
         });
@@ -598,7 +668,21 @@
                 });
             }
 
-            $.post("/outboundOrder/backGoods",data.field,function (res) {
+            $.post("/outboundOrder/salesReturn",data.field,function (res) {
+                if (res.code==200){
+                    //重新加载表格数据
+                    tableIns.reload();
+                    //关闭退货弹出层
+                    layer.close(mainIndex);
+                }
+                layer.msg(res.msg);
+            });
+            return false;
+        })
+
+        //发货提交
+        form.on("submit(doOutSubmit)",function (data) {
+            $.post("/outboundOrder/shipments",data.field,function (res) {
                 if (res.code==200){
                     //重新加载表格数据
                     tableIns.reload();

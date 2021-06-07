@@ -58,4 +58,10 @@
         </where>
         order by id desc
     </select>
+
+    <select id="selectById" resultMap="BaseResultMap">
+        select id, ct_id, ct_goods_id, goods_id, order_spec, order_quantity, actual_outbound_spec, actual_spec_order_quantity, actual_outbound_quantity, order_time, ct_goods_unit_price_that_day, amount, status, ct_order_type, remark, create_time, update_time
+        from bus_outbound_order
+        where id = #{id}
+    </select>
 </mapper>
