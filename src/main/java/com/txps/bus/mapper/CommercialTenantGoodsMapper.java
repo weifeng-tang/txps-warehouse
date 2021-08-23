@@ -34,4 +34,11 @@ public interface CommercialTenantGoodsMapper extends BaseMapper<CommercialTenant
      * @return
      */
     List<CommercialTenantGoods> loadAllGoodsForSelect(@Param("ctId")Long ctId, @Param("goodsType")Integer goodsType);
+
+    /**
+     * 根据商户ID查询商户有效商品信息
+     * @param ctId
+     * @return
+     */
+    List<CommercialTenantGoods> queryAllGoodsByCtId(Long ctId);
 }

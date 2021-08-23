@@ -11,7 +11,7 @@
         <result column="status" property="status"/>
         <result column="create_time" property="createTime"/>
         <result column="update_time" property="updateTime"/>
-        <result column="type" property="unitPrice"/>
+        <result column="type" property="type"/>
         <result column="description" property="description"/>
         <result column="goods_id" property="goodsId"/>
         <result column="goods_name" property="goodsName"/>
@@ -49,6 +49,19 @@
             </if>
         </where>
         order by id desc
+    </select>
+
+    <select id="queryAllGoodsByCtId" resultMap="BaseResultMap">
+        select bctg.id, bctg.commercial_tenant_id, bctg.goods_another_name, bctg.unit_price, bctg.specification, bctg.status, bctg.create_time, bctg.update_time, bg.type, bg.description, bctg.goods_id, bg.goods_name
+        from bus_commercial_tenant_goods bctg
+        left join bus_goods bg
+        on bctg.goods_id = bg.id
+        <where>
+            <if test="ctId != null">
+                and bctg.commercial_tenant_id = #{ctId}
+            </if>
+            and bctg.status = 1
+        </where>
     </select>
 
 </mapper>

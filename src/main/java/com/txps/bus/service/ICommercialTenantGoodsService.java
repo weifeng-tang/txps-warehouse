@@ -20,4 +20,6 @@ public interface ICommercialTenantGoodsService extends IService<CommercialTenant
     IPage<CommercialTenantGoods> queryPageByCondition(CommercialTenantGoodsVo commercialTenantGoodsVo);
 
     List<CommercialTenantGoods> loadAllGoodsForSelect(Long ctId, Integer goodsType);
+
+    List<CommercialTenantGoods> queryAllGoodsByCtId(Long ctId);
 }

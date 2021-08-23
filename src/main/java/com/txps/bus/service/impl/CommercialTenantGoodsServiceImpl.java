@@ -60,6 +60,11 @@ public class CommercialTenantGoodsServiceImpl extends ServiceImpl<CommercialTena
     }
 
     @Override
+    public List<CommercialTenantGoods> queryAllGoodsByCtId(Long ctId) {
+        return commercialTenantGoodsMapper.queryAllGoodsByCtId(ctId);
+    }
+
+    @Override
     public boolean save(CommercialTenantGoods entity) {
         entity.setCreateTime(new Date());
         return super.save(entity);

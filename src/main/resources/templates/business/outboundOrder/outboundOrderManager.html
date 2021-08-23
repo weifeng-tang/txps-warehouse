@@ -148,10 +148,10 @@
         <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>下单
         </button>
-        <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+        <button type="button" lay-event="batchAdd" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>批量下单
         </button>
-        <button type="button" lay-event="add" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
+        <button type="button" lay-event="batchOut" class="layui-btn layui-btn-sm layui-btn-normal layui-btn-radius">
             <i class="layui-icon layui-icon-add-1"></i>批量出库
         </button>
     </div>
@@ -375,6 +375,26 @@
         </div>
     </form>
 </div>
+
+<div id="openBatchAddDiv" style="display: none;padding-right: 3%">
+    <form action="" method="post" class="layui-form" id="dataFrmBatchAdd" lay-filter="dataFrmOut">
+        <div class="layui-form-item">
+            <div class="layui-inline">
+                <label class="layui-form-label">选择所属商户</label>
+                <div class="layui-input-inline">
+                    <select name="ctId" id="ctId" class="select_ct">
+
+                    </select>
+                </div>
+
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doDownloadTemplate" id="downloadTemplate"><i
+                        class="layui-icon layui-icon-search layui-icon-normal"></i>下载模板
+                </button>
+            </div>
+        </div>
+
+    </form>
+</div>
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
 
 <script type="text/javascript">
@@ -463,6 +483,11 @@
             switch (obj.event) {
                 case 'add':
                     openAddLayer();
+                    break;
+                case 'batchAdd':
+                    openBatchAdd();
+                    break;
+                case 'batchOut':
                     break;
             };
         });
@@ -591,7 +616,24 @@
                 form.render("select");
             });
         }
-        
+
+        function openBatchAdd() {
+            mainIndex = layer.open({
+                type:1,
+                content:$("#openBatchAddDiv"),
+                area:['700px','500px'],
+                title:'批量下单',
+                success:function () {
+                    $("#dataFrm")[0].reset();
+                    //初始化客户名称的下拉列表
+                    initCustomerSelect();
+                    console.log($("#select_ct_list").val());
+                    initGoodsSelect();
+                    url="/outboundOrder/addOutboundOrder";
+
+                }
+            });
+        }
 
         form.on("submit(doSubmit)",function (data) {
             $.post(url,data.field,function (res) {
