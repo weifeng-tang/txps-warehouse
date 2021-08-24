@@ -1,6 +1,5 @@
 package com.txps.bus.service.impl;
 
-import cn.hutool.core.collection.CollUtil;
 import cn.hutool.poi.excel.ExcelUtil;
 import cn.hutool.poi.excel.ExcelWriter;
 import com.txps.bus.entity.CommercialTenant;
@@ -9,7 +8,11 @@ import com.txps.bus.service.IExcelService;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.stereotype.Service;
 
+import java.io.File;
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 /**
  * @description:
@@ -22,26 +25,44 @@ public class ExcelServiceImpl implements IExcelService {
 
     @Override
     public Boolean generateCtOrderExcel(List<CommercialTenantGoods> ctGoods, CommercialTenant ct) {
-        List<String> row1 = CollUtil.newArrayList("aa", "bb", "cc", "dd");
-        List<String> row2 = CollUtil.newArrayList("aa1", "bb1", "cc1", "dd1");
-        List<String> row3 = CollUtil.newArrayList("aa2", "bb2", "cc2", "dd2");
-        List<String> row4 = CollUtil.newArrayList("aa3", "bb3", "cc3", "dd3");
-        List<String> row5 = CollUtil.newArrayList("aa4", "bb4", "cc4", "dd4");
-
-        List<List<String>> rows = CollUtil.newArrayList(row1, row2, row3, row4, row5);
+        List<Map> rows = new ArrayList<>();
+        ctGoods.stream().forEach(ctGood -> {
+            Map<String, String> row = new HashMap<>();
+            row.put("id", ctGood.getId().toString());
+            row.put("goodsName", ctGood.getGoodsName());
+            row.put("specification", ctGood.getSpecification());
+            row.put("unitPrice", ctGood.getUnitPrice().toPlainString());
+            row.put("number", null);
+            rows.add(row);
+        });
 
         String path = System.getProperty("user.dir").replace("\\", "/") + "/src/main/resources/download/";
-
-        ExcelWriter writer = ExcelUtil.getWriter(path + "writeBeanTest.xlsx");
+        File file = new File(path + ct.getName() + ".xlsx");
+        if (file.exists()) {
+            file.delete();
+        }
+        ExcelWriter writer = ExcelUtil.getWriter(path + ct.getName() + ".xlsx");
         //跳过当前行，既第一行，非必须，在此演示用
-        writer.passCurrentRow();
+        //writer.passCurrentRow();
 
+        writer.merge(4, ct.getName());
         //合并单元格后的标题行，使用默认标题样式
-        writer.merge(row1.size() - 1, "测试标题");
+        writer.addHeaderAlias("id", "主键");
+        writer.addHeaderAlias("goodsName", "名称");
+        writer.addHeaderAlias("specification", "规格");
+        writer.addHeaderAlias("unitPrice", "单价");
+        writer.addHeaderAlias("number", "下单数");
+        //目的隐藏主键
+        writer.setColumnWidth(0, 0);
+
         //一次性写出内容，强制输出标题
         writer.write(rows, true);
         //关闭writer，释放内存
         writer.close();
         return true;
+    }
+
+    public static void main(String[] args) {
+        new ExcelServiceImpl().generateCtOrderExcel(null, null);
     }
 }
