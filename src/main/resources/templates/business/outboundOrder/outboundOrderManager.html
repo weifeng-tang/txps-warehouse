@@ -771,6 +771,11 @@
             form.render("select");
         });
 
+        form.on("submit(doDownloadTemplate)",function (data) {
+            var ctName = $('#ctId option:selected').text();
+            window.location.href = "/resources/download/" + ctName + ".xlsx";
+        })
+
     });
 
 

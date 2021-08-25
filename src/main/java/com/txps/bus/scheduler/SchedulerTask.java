@@ -30,7 +30,7 @@ public class SchedulerTask {
     @Autowired
     private IExcelService excelService;
 
-    @Scheduled(cron = "0 0/1 * * * ?")
+    @Scheduled(cron = "0 0 5 * * ?")
     public void ctGoodsExcelHandleTask() {
         //1. 获取所有商户
         QueryWrapper<CommercialTenant> queryCtWrapper = new QueryWrapper<>();
