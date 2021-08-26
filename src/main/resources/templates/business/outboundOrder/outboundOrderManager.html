@@ -773,6 +773,11 @@
 
         form.on("submit(doDownloadTemplate)",function (data) {
             var ctName = $('#ctId option:selected').text();
+            console.log(ctName);
+            if (ctId == null || ctId == '') {
+                layer.msg("请选择对应的商户");
+                return;
+            }
             window.location.href = "/resources/download/" + ctName + ".xlsx";
         })
 

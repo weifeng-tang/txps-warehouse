@@ -36,7 +36,7 @@ public class ExcelServiceImpl implements IExcelService {
             rows.add(row);
         });
 
-        String path = System.getProperty("user.dir").replace("\\", "/") + "/src/main/resources/download/";
+        String path = System.getProperty("user.dir").replace("\\", "/") + "/src/main/resources/static/resources/download/";
         File file = new File(path + ct.getName() + ".xlsx");
         if (file.exists()) {
             file.delete();
