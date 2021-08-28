@@ -386,13 +386,42 @@
 
                     </select>
                 </div>
-
                 <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="doDownloadTemplate" id="downloadTemplate"><i
                         class="layui-icon layui-icon-search layui-icon-normal"></i>下载模板
                 </button>
             </div>
-        </div>
 
+            <div class="layui-inline">
+                <label class="layui-form-label">选择下单类型</label>
+                <div class="layui-input-inline">
+                    <select name="orderType" id="orderType">
+                        <option value="1">客餐</option>
+                        <option value="2">员工餐</option>
+                        <option value="3">消耗品</option>
+                        <option value="4">补单</option>
+                    </select>
+                </div>
+            </div>
+
+            <div class="layui-inline">
+                <label class="layui-form-label">选择导入文件</label>
+                <div class="layui-input-inline">
+                    <input id="excelFile" name="excelFile" type="file" class="layui-input input-radius"/>
+                </div>
+            </div>
+
+        </div>
+b
+        <div class="layui-form-item" style="height: 280px">
+            <div class="layui-input-block" style="text-align: center;padding-right: 0%">
+                <button type="button" class="layui-btn layui-btn-radius" lay-submit="" lay-filter="batchOrder" id="batchOrder"><i
+                        class="layui-icon layui-icon-search layui-icon-normal"></i>提交
+                </button>
+                <button type="reset" class="layui-btn layui-btn-radius layui-btn-warm"><i
+                        class="layui-icon layui-icon-refresh"></i><span>重置</span>
+                </button>
+            </div>
+        </div>
     </form>
 </div>
 <script type="text/javascript" src="/resources/layui/layui.js"></script>
@@ -774,12 +803,24 @@
         form.on("submit(doDownloadTemplate)",function (data) {
             var ctName = $('#ctId option:selected').text();
             console.log(ctName);
-            if (ctId == null || ctId == '') {
+            if (ctName == null || ctName == '' || ctName == '全部') {
                 layer.msg("请选择对应的商户");
                 return;
             }
             window.location.href = "/resources/download/" + ctName + ".xlsx";
         })
+
+
+        //批量下单提交
+        form.on("submit(batchOrder)",function (data) {
+            console.log(data);
+            var fileName = data.field.excelFile;
+            var ctId = data.field.ctId;
+            var orderType = data.field.orderType;
+            console.log(fileName);
+            return false;
+        })
+
 
     });
 
