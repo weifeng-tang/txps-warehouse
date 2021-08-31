@@ -814,15 +814,36 @@ b
         //批量下单提交
         form.on("submit(batchOrder)",function (data) {
             console.log(data);
-            var fileName = data.field.excelFile;
+            var fileName = data.field.file;
             var ctId = data.field.ctId;
             var orderType = data.field.orderType;
             console.log(fileName);
+            var fd = new FormData();
+            var formData = new FormData($( "#dataFrmBatchOrder" )[0]);
+            $.ajax({
+                cache : true,
+                type : "post",
+                url : "/batchOrder",
+                async : false,
+                data : formData, // 你的formid
+                contentType: false, //jax 中 contentType 设置为 false 是为了避免 JQuery 对其操作，从而失去分界符，而使服务器不能正常解析文件
+                processData: false, //当设置为true的时候,jquery ajax 提交的时候不会序列化 data，而是直接使用data
+                error : function(request) {
+                    layer.alert('操作失败', {
+                        icon: 2,
+                        title:"提示"
+                    });
+                },
+                success : function(ret) {
+
+                }
+            })
             return false;
         })
 
 
     });
+
 
 
 </script>
