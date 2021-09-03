@@ -569,7 +569,7 @@ b
                 title:'修改订单',
                 success:function () {
                     //清空原有的数据
-                    $("#dataFrm")[0].reset();
+                    $("#dataFrmBatchOrder")[0].reset();
                     console.log(data);
                     //装载新的数据
                     form.val("dataFrm",data);
@@ -653,7 +653,7 @@ b
                 area:['700px','500px'],
                 title:'批量下单',
                 success:function () {
-                    $("#dataFrm")[0].reset();
+                    $("#dataFrmBatchOrder")[0].reset();
                     //初始化客户名称的下拉列表
                     initCustomerSelect();
                     console.log($("#select_ct_list").val());
