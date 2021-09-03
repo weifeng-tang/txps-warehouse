@@ -1,5 +1,6 @@
 package com.txps.bus.controller;
 
+import cn.hutool.core.date.DateTime;
 import cn.hutool.poi.excel.ExcelReader;
 import cn.hutool.poi.excel.ExcelUtil;
 import com.txps.bus.entity.CommercialTenant;
@@ -16,6 +17,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.multipart.MultipartFile;
 
+import javax.servlet.http.HttpServletResponse;
 import java.io.InputStream;
 import java.math.BigDecimal;
 import java.util.List;
@@ -88,6 +90,23 @@ public class ExcelController {
             }
         } catch (Exception e) {
             return ResultObj.ORDER_FAIL;
+        }
+    }
+
+    @RequestMapping("/export/ctOrder/excelTemplate")
+    public void exportCtOrderExcelTemplate(String ctId, HttpServletResponse response){
+        try {
+            log.info("【商户订单导出】商户号: {}, 时间:{}", ctId, DateTime.now());
+            if (StringUtils.isBlank(ctId)) {
+                return;
+            }
+            //1.查询商户当天订单数据
+
+            //2.封装excel
+
+
+        } catch (Exception e) {
+
         }
     }
 }
