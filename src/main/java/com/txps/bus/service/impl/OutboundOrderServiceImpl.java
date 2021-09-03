@@ -5,10 +5,12 @@ import com.baomidou.mybatisplus.core.metadata.IPage;
 import com.baomidou.mybatisplus.extension.plugins.pagination.Page;
 import com.baomidou.mybatisplus.extension.service.impl.ServiceImpl;
 import com.txps.bus.entity.*;
+import com.txps.bus.exception.BusinessException;
 import com.txps.bus.mapper.*;
 import com.txps.bus.service.IOutboundOrderService;
 import com.txps.bus.vo.OutboundOrderVo;
 import com.txps.bus.vo.SalesReturnOrderVo;
+import com.txps.sys.common.Constast;
 import com.txps.sys.common.DataGridView;
 import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -65,17 +67,22 @@ public class OutboundOrderServiceImpl extends ServiceImpl<OutboundOrderMapper, O
         outboundOrderVo.setGoodsId(commercialTenantGoods.getGoodsId());
         //更加商品id获取商品实际出库规格
         Goods goods = goodsMapper.selectById(commercialTenantGoods.getGoodsId());
-        if (StringUtils.isNotBlank(goods.getBasedSpecifications())){
-            //todo 订单失败, 无基础规格
+        if (StringUtils.isBlank(goods.getBasedSpecifications())){
+            //订单失败, 无基础规格
+            throw new BusinessException("ERROR", "订单失败, 无基础规格");
         }
         outboundOrderVo.setActualOutboundSpec(goods.getBasedSpecifications());
+        if (StringUtils.isBlank((outboundOrderVo.getOrderSpec()))) {
+            outboundOrderVo.setOrderSpec(commercialTenantGoods.getSpecification());
+        }
         if (goods.getBasedSpecifications().equals(outboundOrderVo.getOrderSpec())){
             outboundOrderVo.setActualSpecOrderQuantity(outboundOrderVo.getOrderQuantity());
         }else {
             //下单规格与商品基础规格不一致,需要转换
             GoodsSpecConvert gsc = getGoodsSpecConvertObject(outboundOrderVo);
             if (ObjectUtils.isEmpty(gsc)){
-                //todo 订单失败,无对应的转换对象
+                //订单失败,无对应的转换对象
+                throw new BusinessException("ERROR", "订单失败,无对应的转换对象");
             }
             //转换, 下单数 * 转换率
             outboundOrderVo.setActualSpecOrderQuantity(outboundOrderVo.getOrderQuantity().multiply(gsc.getConvertRatio()));

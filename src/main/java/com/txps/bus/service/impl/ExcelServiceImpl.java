@@ -29,10 +29,12 @@ public class ExcelServiceImpl implements IExcelService {
         ctGoods.stream().forEach(ctGood -> {
             Map<String, String> row = new HashMap<>();
             row.put("id", ctGood.getId().toString());
-            row.put("goodsName", ctGood.getGoodsName());
+            row.put("goodsName", ctGood.getGoodsAnotherName());
             row.put("specification", ctGood.getSpecification());
             row.put("unitPrice", ctGood.getUnitPrice().toPlainString());
             row.put("number", null);
+            row.put("orderSpec", null);
+            row.put("remark", null);
             rows.add(row);
         });
 
@@ -45,15 +47,20 @@ public class ExcelServiceImpl implements IExcelService {
         //跳过当前行，既第一行，非必须，在此演示用
         //writer.passCurrentRow();
 
-        writer.merge(4, ct.getName());
+        writer.merge(6, ct.getName());
         //合并单元格后的标题行，使用默认标题样式
         writer.addHeaderAlias("id", "主键");
         writer.addHeaderAlias("goodsName", "名称");
-        writer.addHeaderAlias("specification", "规格");
+        writer.addHeaderAlias("specification", "商品规格");
         writer.addHeaderAlias("unitPrice", "单价");
-        writer.addHeaderAlias("number", "下单数");
+        writer.addHeaderAlias("number", "下单数(不填默认不下单)");
+        writer.addHeaderAlias("orderSpec", "订单规格(不填默认商品规格)");
+        writer.addHeaderAlias("remark", "备注(可不填)");
         //目的隐藏主键
         writer.setColumnWidth(0, 0);
+        writer.setColumnWidth(4, 21);
+        writer.setColumnWidth(5, 25);
+        writer.setColumnWidth(6, 20);
 
         //一次性写出内容，强制输出标题
         writer.write(rows, true);

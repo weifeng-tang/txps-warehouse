@@ -377,7 +377,7 @@
 </div>
 
 <div id="openBatchAddDiv" style="display: none;padding-right: 3%">
-    <form action="" method="post" class="layui-form" id="dataFrmBatchAdd" lay-filter="dataFrmOut">
+    <form action="" method="post" class="layui-form" id="dataFrmBatchOrder" lay-filter="dataFrmOut" enctype="multipart/form-data">
         <div class="layui-form-item">
             <div class="layui-inline">
                 <label class="layui-form-label">选择所属商户</label>
@@ -406,7 +406,7 @@
             <div class="layui-inline">
                 <label class="layui-form-label">选择导入文件</label>
                 <div class="layui-input-inline">
-                    <input id="excelFile" name="excelFile" type="file" class="layui-input input-radius"/>
+                    <input id="excelFile" name="file" type="file" class="layui-input input-radius"/>
                 </div>
             </div>
 
@@ -838,7 +838,6 @@ b
 
                 }
             })
-            return false;
         })
 
 
